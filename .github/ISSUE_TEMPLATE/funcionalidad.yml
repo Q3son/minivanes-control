@@ -1,0 +1,27 @@
+name: Nueva funcionalidad
+description: Algo nuevo que el sistema debería hacer
+title: "feat: "
+labels: [funcionalidad]
+body:
+  - type: textarea
+    id: necesidad
+    attributes:
+      label: Necesidad del cliente
+      description: Qué quiere lograr y en qué situación del día a día.
+      placeholder: "Cuando un conductor me dice que toca cambiar llanta, quiero…"
+    validations:
+      required: true
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      placeholder: |
+        - [ ] Al buscar la placa se ve…
+        - [ ] Si el DOT no coincide, aparece…
+    validations:
+      required: true
+  - type: dropdown
+    id: modulo
+    attributes:
+      label: Módulo
+      options: [Unidades, Cobros y gastos, Mantenimientos, Llantas, Alertas, Reportes, Otro]
