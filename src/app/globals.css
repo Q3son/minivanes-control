@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-figtree), "Segoe UI", Roboto, Arial, sans-serif;
+  --color-marca: #0b6e4f;
+  --color-marca-suave: #e2f2eb;
+  --color-fondo: #f3f4f6;
+  --color-tinta: #101418;
+}
+
+body {
+  background: var(--color-fondo);
+  color: var(--color-tinta);
+}
