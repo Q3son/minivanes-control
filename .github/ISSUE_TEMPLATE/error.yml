@@ -1,0 +1,29 @@
+name: Error
+description: Algo no funciona como debería
+title: "fix: "
+labels: [error]
+body:
+  - type: textarea
+    id: que-paso
+    attributes:
+      label: Qué pasó
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducirlo
+      placeholder: |
+        1. Entrar a la placa XBG963
+        2. Tocar "Actualizar kilometraje"
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Qué esperabas que pasara
+  - type: dropdown
+    id: equipo
+    attributes:
+      label: Equipo
+      options: [Celular Android, iPhone, Laptop]
