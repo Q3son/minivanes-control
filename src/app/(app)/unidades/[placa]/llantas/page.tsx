@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Aviso, Placa, Tarjeta } from "@/components/ui";
-import { listarLlantas, type RegistroLlanta } from "@/lib/data/llantas";
+import { listarLlantas, urlsDeFotos, type RegistroLlanta } from "@/lib/data/llantas";
 import { obtenerVehiculo } from "@/lib/data/vehiculos";
 import { fechaCorta, posicionesDe, type Posicion } from "@/lib/domain";
 
@@ -21,6 +21,27 @@ export default async function Llantas({
   const posiciones = posicionesDe(v.traserasDobles);
   const puestas = new Map(llantas.filter((l) => !l.fechaRetiro).map((l) => [l.posicion, l]));
   const retiradas = llantas.filter((l) => l.fechaRetiro);
+  const fotos = await urlsDeFotos(
+    retiradas.flatMap((l) => [l.fotoPuesta, l.fotoRetiro]).filter((r): r is string => !!r),
+  );
+  const miniatura = (ruta: string | null, texto: string) =>
+    ruta && fotos[ruta] ? (
+      <a href={fotos[ruta]} target="_blank" rel="noreferrer" className="relative block">
+        {/* eslint-disable-next-line @next/next/no-img-element -- URL firmada temporal de Supabase */}
+        <img
+          src={fotos[ruta]}
+          alt={texto}
+          className="aspect-[4/3] w-full rounded-lg object-cover"
+        />
+        <span className="absolute top-1 left-1 rounded bg-black/60 px-1.5 text-[11px] font-semibold text-white">
+          {texto}
+        </span>
+      </a>
+    ) : (
+      <span className="grid aspect-[4/3] place-items-center rounded-lg bg-gray-100 text-xs text-gray-500">
+        Sin foto
+      </span>
+    );
 
   const casilla = (p: Posicion) => {
     const l = puestas.get(p.codigo);
@@ -113,24 +134,35 @@ export default async function Llantas({
         ) : (
           <ul className="divide-y divide-gray-100">
             {retiradas.map((l: RegistroLlanta) => (
-              <li key={l.id} className="flex items-center gap-3 py-3">
-                <span className="min-w-0 flex-1">
-                  <b className="block font-semibold">
-                    {posiciones.find((p) => p.codigo === l.posicion)?.nombre ?? l.posicion} · duró{" "}
-                    {km(l.kmRetiro != null ? l.kmRetiro - l.kmPuesta : null)}
-                  </b>
-                  <span className="text-sm text-gray-500">
-                    {fechaCorta(l.fechaPuesta)} → {l.fechaRetiro ? fechaCorta(l.fechaRetiro) : "—"}{" "}
-                    · DOT {l.dot} → {l.dotDevuelto}
+              <li key={l.id} className="flex flex-col gap-2 py-3">
+                <div className="flex items-center gap-3">
+                  <span className="min-w-0 flex-1">
+                    <b className="block font-semibold">
+                      {posiciones.find((p) => p.codigo === l.posicion)?.nombre ?? l.posicion} · duró{" "}
+                      {km(l.kmRetiro != null ? l.kmRetiro - l.kmPuesta : null)}
+                    </b>
+                    <span className="text-sm text-gray-500">
+                      {fechaCorta(l.fechaPuesta)} →{" "}
+                      {l.fechaRetiro ? fechaCorta(l.fechaRetiro) : "—"} · DOT {l.dot} →{" "}
+                      {l.dotDevuelto}
+                    </span>
                   </span>
-                </span>
-                <span
-                  className={`rounded-full px-2.5 py-0.5 text-[13px] font-semibold whitespace-nowrap ${
-                    l.dotCoincide === false ? "bg-red-50 text-red-700" : "bg-marca-suave text-marca"
-                  }`}
-                >
-                  {l.dotCoincide === false ? "No coincide" : "Coincide"}
-                </span>
+                  <span
+                    className={`rounded-full px-2.5 py-0.5 text-[13px] font-semibold whitespace-nowrap ${
+                      l.dotCoincide === false
+                        ? "bg-red-50 text-red-700"
+                        : "bg-marca-suave text-marca"
+                    }`}
+                  >
+                    {l.dotCoincide === false ? "No coincide" : "Coincide"}
+                  </span>
+                </div>
+                {(l.fotoPuesta || l.fotoRetiro) && (
+                  <div className="grid grid-cols-2 gap-2">
+                    {miniatura(l.fotoPuesta, "Al ponerla")}
+                    {miniatura(l.fotoRetiro, "Al sacarla")}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
