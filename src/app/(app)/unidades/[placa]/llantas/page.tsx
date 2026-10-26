@@ -59,7 +59,7 @@ export default async function Llantas({
           <>
             <b className="text-lg tabular-nums">{km(recorrido)}</b>
             <span className="truncate text-xs text-gray-500">
-              {l.marca ?? "—"} · DOT {l.dot ?? "—"}
+              {[l.marca, l.dot && `DOT ${l.dot}`].filter(Boolean).join(" · ") || "Sin datos"}
             </span>
           </>
         ) : (
@@ -94,8 +94,8 @@ export default async function Llantas({
           El número es lo que lleva recorrido cada llanta desde que se puso. Toca una para
           cambiarla.
         </p>
-        <div className="grid grid-cols-[1fr_56px_1fr] items-stretch gap-2">
-          <div className="flex flex-col justify-between gap-2">
+        <div className="grid grid-cols-[minmax(0,1fr)_56px_minmax(0,1fr)] items-stretch gap-2">
+          <div className="flex min-w-0 flex-col justify-between gap-2">
             {posiciones.filter((p) => p.lado === "izquierda").map(casilla)}
           </div>
           <svg viewBox="0 0 56 200" className="h-full min-h-48 w-14" aria-hidden>
@@ -120,7 +120,7 @@ export default async function Llantas({
               <rect x="44" y="140" width="9" height="26" rx="3" />
             </g>
           </svg>
-          <div className="flex flex-col justify-between gap-2">
+          <div className="flex min-w-0 flex-col justify-between gap-2">
             {posiciones.filter((p) => p.lado === "derecha").map(casilla)}
           </div>
         </div>
