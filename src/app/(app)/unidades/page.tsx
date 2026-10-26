@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BotonRecorrido } from "@/components/boton-recorrido";
 import { Encabezado } from "@/components/encabezado";
 import { PildoraEstado } from "@/components/estado";
 import { Chevron, FILA_TOCABLE, Placa, Tarjeta } from "@/components/ui";
@@ -47,6 +48,9 @@ export default async function Unidades({
           className="h-11 w-full rounded-full border border-gray-500 bg-white px-4 text-base"
         />
       </form>
+      {todos.length > 0 && (
+        <BotonRecorrido pantalla="unidades" texto="¿Cómo funciona una unidad?" />
+      )}
       <Tarjeta>
         {vehiculos.length === 0 ? (
           <p className="py-6 text-center text-gray-600">

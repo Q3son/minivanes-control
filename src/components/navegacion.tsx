@@ -2,11 +2,11 @@
 
 import "driver.js/dist/driver.css";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef } from "react";
 import { InstalarApp } from "@/components/instalar-app";
 import { iniciarRecorrido, marcarRecorridoVisto, yaVioElRecorrido } from "@/components/recorrido";
-import { pantallaDe } from "@/lib/recorridos";
+import { PARAM_RECORRIDO, pantallaDe } from "@/lib/recorridos";
 
 const iconos = {
   inicio: "M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z",
@@ -50,17 +50,29 @@ export function Navegacion({ alertas = 0 }: { alertas?: number }) {
   const menu = useRef<HTMLDialogElement>(null);
   const pantalla = pantallaDe(ruta);
 
-  // La primera vez que se abre Inicio en este celular, se ofrece el recorrido solo.
+  const router = useRouter();
+  const irA = useCallback((href: string) => router.push(href), [router]);
+
   useEffect(() => {
-    if (pantalla !== "inicio" || yaVioElRecorrido()) return;
-    marcarRecorridoVisto();
-    const t = setTimeout(() => void iniciarRecorrido("inicio"), 700);
+    if (!pantalla) return;
+    const url = new URL(window.location.href);
+    const pedido = url.searchParams.get(PARAM_RECORRIDO) === "1";
+    // La primera vez que se abre Inicio en este celular, el recorrido arranca solo.
+    const primeraVez = pantalla === "inicio" && !yaVioElRecorrido();
+    if (!pedido && !primeraVez) return;
+
+    if (pedido) {
+      url.searchParams.delete(PARAM_RECORRIDO);
+      window.history.replaceState(null, "", url.pathname + url.search);
+    }
+    if (primeraVez) marcarRecorridoVisto();
+    const t = setTimeout(() => void iniciarRecorrido(pantalla, irA), 600);
     return () => clearTimeout(t);
-  }, [pantalla]);
+  }, [pantalla, ruta, irA]);
 
   function verRecorrido() {
     menu.current?.close();
-    if (pantalla) void iniciarRecorrido(pantalla);
+    if (pantalla) void iniciarRecorrido(pantalla, irA);
   }
 
   return (
@@ -135,7 +147,9 @@ export function Navegacion({ alertas = 0 }: { alertas?: number }) {
               Ver recorrido guiado
               <span className="block text-sm font-normal text-gray-600">
                 {pantalla
-                  ? "Te explica esta pantalla paso a paso"
+                  ? pantalla === "unidades"
+                    ? "Lista, ficha y llantas, paso a paso"
+                    : "Te explica esta pantalla paso a paso"
                   : "Disponible en Inicio, Unidades, la ficha, Llantas y Alertas"}
               </span>
             </span>
