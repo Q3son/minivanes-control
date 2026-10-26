@@ -4,6 +4,7 @@ import "driver.js/dist/driver.css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { InstalarApp } from "@/components/instalar-app";
 import { iniciarRecorrido, marcarRecorridoVisto, yaVioElRecorrido } from "@/components/recorrido";
 import { pantallaDe } from "@/lib/recorridos";
 
@@ -139,6 +140,7 @@ export function Navegacion({ alertas = 0 }: { alertas?: number }) {
               </span>
             </span>
           </button>
+          <InstalarApp alTerminar={() => menu.current?.close()} />
           <form action="/auth/salir" method="post">
             <button className="flex min-h-14 w-full items-center gap-3 rounded-xl px-2 text-left font-semibold text-red-800 transition-colors active:bg-red-50">
               <Icono d={iconos.salir} />
