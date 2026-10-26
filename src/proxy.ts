@@ -27,9 +27,10 @@ export default async function proxy(request: NextRequest) {
     },
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // getClaims verifica la firma del token localmente (llaves asimétricas de Supabase),
+  // sin ir al servidor de Auth en cada clic; solo refresca la sesión cuando vence.
+  const { data } = await supabase.auth.getClaims();
+  const user = data?.claims.sub ?? null;
 
   const ruta = request.nextUrl.pathname;
   const esPublica = RUTAS_PUBLICAS.some((p) => ruta === p || ruta.startsWith(p + "/"));

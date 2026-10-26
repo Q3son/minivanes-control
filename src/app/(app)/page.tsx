@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BotonEnviar } from "@/components/boton-enviar";
 import { Encabezado } from "@/components/encabezado";
 import { ListaAlertas } from "@/components/lista-alertas";
 import { Aviso, Placa, Tarjeta } from "@/components/ui";
@@ -136,9 +137,12 @@ export default async function Inicio({
                 ) : (
                   <form action={cobrarCuota}>
                     <input type="hidden" name="placa" value={v.placa} />
-                    <button className="rounded-full border-[1.5px] border-marca px-4 py-1.5 text-sm font-bold text-marca">
+                    <BotonEnviar
+                      pendiente="Cobrando…"
+                      className="rounded-full border-[1.5px] border-marca px-4 py-1.5 text-sm font-bold text-marca transition active:scale-95 disabled:opacity-60"
+                    >
                       Cobrar
-                    </button>
+                    </BotonEnviar>
                   </form>
                 )}
               </li>
