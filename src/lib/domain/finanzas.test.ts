@@ -3,10 +3,10 @@ import { rankingPorUnidad, resumenMes } from "./finanzas";
 import type { Movimiento } from "./tipos";
 
 const movs: Movimiento[] = [
-  { placa: "XBG963", tipo: "ingreso", monto: 1050, fecha: "2026-11-03" },
-  { placa: "XBG963", tipo: "gasto", monto: 185.5, fecha: "2026-11-05" },
-  { placa: "D6T963", tipo: "ingreso", monto: 1300, fecha: "2026-11-04" },
-  { placa: "D6T963", tipo: "ingreso", monto: 1300, fecha: "2026-10-28" },
+  { placa: "ABC123", tipo: "ingreso", monto: 1050, fecha: "2026-11-03" },
+  { placa: "ABC123", tipo: "gasto", monto: 185.5, fecha: "2026-11-05" },
+  { placa: "DEF456", tipo: "ingreso", monto: 1300, fecha: "2026-11-04" },
+  { placa: "DEF456", tipo: "ingreso", monto: 1300, fecha: "2026-10-28" },
 ];
 
 describe("finanzas", () => {
@@ -15,13 +15,13 @@ describe("finanzas", () => {
   });
 
   it("filtra por placa", () => {
-    expect(resumenMes(movs, "2026-11", "XBG963").neto).toBe(864.5);
+    expect(resumenMes(movs, "2026-11", "ABC123").neto).toBe(864.5);
   });
 
   it("ordena las unidades por lo que dejaron", () => {
-    expect(rankingPorUnidad(movs, "2026-11", ["XBG963", "D6T963"]).map((r) => r.placa)).toEqual([
-      "D6T963",
-      "XBG963",
+    expect(rankingPorUnidad(movs, "2026-11", ["ABC123", "DEF456"]).map((r) => r.placa)).toEqual([
+      "DEF456",
+      "ABC123",
     ]);
   });
 });

@@ -2,8 +2,8 @@ import { alertasDeFlota, type Vehiculo } from "@/lib/domain";
 
 const ejemplo: Vehiculo[] = [
   {
-    placa: "XBG963",
-    conductor: "Ejemplo",
+    placa: "ABC123",
+    conductor: "Juan Pérez",
     marca: "Mercedes-Benz",
     cuotaSemanal: 1050,
     traserasDobles: true,
