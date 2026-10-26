@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Tarjeta } from "@/components/ui";
+import { Aviso, Tarjeta } from "@/components/ui";
 import { FormularioIngreso } from "./formulario";
 
 export const metadata: Metadata = { title: "Ingresar · Control de Minivanes" };
 
-export default function Ingresar() {
+export default async function Ingresar({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center gap-6 px-4 py-10">
       <header>
@@ -16,6 +21,9 @@ export default function Ingresar() {
           Te mandamos un enlace al correo. Sin contraseñas que recordar.
         </p>
       </header>
+      {error === "enlace" && (
+        <Aviso tono="error">El enlace ya venció o ya se usó. Pide uno nuevo.</Aviso>
+      )}
       <Tarjeta>
         <FormularioIngreso />
       </Tarjeta>
