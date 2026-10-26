@@ -23,3 +23,59 @@ body {
   background: var(--color-fondo);
   color: var(--color-tinta);
 }
+
+/* Menú inferior (hoja) */
+.menu-inferior::backdrop {
+  background: rgb(0 0 0 / 0.45);
+}
+.menu-inferior[open] {
+  animation: subir 180ms ease-out;
+}
+@keyframes subir {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+/* Recorrido guiado: letra grande y botones de la marca */
+.driver-popover.recorrido {
+  max-width: min(340px, calc(100vw - 32px));
+  border-radius: 16px;
+  padding: 18px;
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+}
+.driver-popover.recorrido .driver-popover-title {
+  font-size: 18px;
+  font-weight: 800;
+}
+.driver-popover.recorrido .driver-popover-description {
+  font-size: 16px;
+  line-height: 1.45;
+  color: #374151;
+}
+.driver-popover.recorrido .driver-popover-progress-text {
+  font-size: 14px;
+  color: #4b5563;
+}
+.driver-popover.recorrido .driver-popover-navigation-btns button {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  text-shadow: none;
+  border: 1.5px solid var(--color-marca);
+  background: #fff;
+  color: var(--color-marca);
+}
+.driver-popover.recorrido .driver-popover-navigation-btns .driver-popover-next-btn {
+  background: var(--color-marca);
+  color: #fff;
+}
+.driver-popover.recorrido .driver-popover-close-btn {
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+  color: #4b5563;
+}

@@ -73,6 +73,7 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
           <div className="flex gap-2">
             <Link
               href={`/unidades/${v.placa}/llantas`}
+              data-tour="llantas"
               className="inline-flex min-h-11 items-center rounded-full bg-marca px-4 text-sm font-bold text-white transition active:scale-95"
             >
               Llantas
@@ -94,11 +95,11 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
         </Aviso>
       ))}
 
-      <Tarjeta>
+      <Tarjeta data-tour="km">
         <FormularioKm accion={registrarKm.bind(null, v.placa)} kmAnterior={v.kmActual} />
       </Tarjeta>
 
-      <Tarjeta>
+      <Tarjeta data-tour="aceite">
         <div className="flex items-baseline justify-between">
           <h2 className="font-bold">Cambio de aceite</h2>
           <span className="text-sm text-gray-600">cada {km(v.intervaloAceiteKm)}</span>
@@ -127,7 +128,7 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
         )}
       </Tarjeta>
 
-      <Tarjeta>
+      <Tarjeta data-tour="mantenimiento">
         <FormularioServicio
           key={v.kmActual ?? "sin-km"}
           accion={registrarMantenimiento.bind(null, v.placa)}
@@ -135,7 +136,7 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
         />
       </Tarjeta>
 
-      <Tarjeta>
+      <Tarjeta data-tour="documentos">
         <h2 className="font-bold">Documentos</h2>
         <ul className="divide-y divide-gray-200">
           {documentos.map(({ nombre, vence }) => {
