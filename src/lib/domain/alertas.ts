@@ -1,4 +1,4 @@
-import { diasEntre } from "./fechas";
+import { diasEntre, fechaCorta } from "./fechas";
 import type { Alerta, Vehiculo } from "./tipos";
 
 export const AVISO_ACEITE_KM = 1000;
@@ -56,7 +56,7 @@ export function alertasDe(v: Vehiculo, hoy: string): Alerta[] {
         tipo: doc.tipo,
         severidad: "critica",
         titulo: doc.vencido,
-        detalle: `Venció el ${doc.fecha}`,
+        detalle: `Venció el ${fechaCorta(doc.fecha)}`,
       });
     } else if (dias <= AVISO_DOCUMENTO_DIAS) {
       alertas.push({
@@ -64,7 +64,7 @@ export function alertasDe(v: Vehiculo, hoy: string): Alerta[] {
         tipo: doc.tipo,
         severidad: "aviso",
         titulo: `${doc.nombre} vence en ${dias} ${dias === 1 ? "día" : "días"}`,
-        detalle: `Vence el ${doc.fecha}`,
+        detalle: `Vence el ${fechaCorta(doc.fecha)}`,
       });
     }
   }
@@ -75,7 +75,7 @@ export function alertasDe(v: Vehiculo, hoy: string): Alerta[] {
       tipo: "kilometraje",
       severidad: "aviso",
       titulo: "Kilometraje sin actualizar",
-      detalle: `Último dato: ${v.kmActualFecha}`,
+      detalle: `Último dato: ${fechaCorta(v.kmActualFecha)}`,
     });
   }
 

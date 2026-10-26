@@ -49,7 +49,11 @@ describe("alertas de documentos", () => {
 
   it("usa femenino para la revisión técnica vencida", () => {
     const [a] = alertasDe({ ...base, revisionVence: "2026-10-20" }, HOY);
-    expect(a).toMatchObject({ severidad: "critica", titulo: "Revisión técnica vencida" });
+    expect(a).toMatchObject({
+      severidad: "critica",
+      titulo: "Revisión técnica vencida",
+      detalle: "Venció el 20 oct 2026",
+    });
   });
 });
 
