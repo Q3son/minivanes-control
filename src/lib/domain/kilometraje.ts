@@ -28,3 +28,10 @@ export function revisarLecturaKm(anterior: number | null, nueva: number): Revisi
   }
   return { ok: true };
 }
+
+/** Convierte lo que escribe el usuario ("176,650", "176 650") en número. */
+export function leerKm(texto: string): number | null {
+  const limpio = texto.replace(/[\s,.]/g, "");
+  if (!/^\d{1,7}$/.test(limpio)) return null;
+  return Number(limpio);
+}

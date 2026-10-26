@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { revisarLecturaKm } from "./kilometraje";
+import { leerKm, revisarLecturaKm } from "./kilometraje";
 
 describe("revisarLecturaKm", () => {
   it("acepta la primera lectura", () => {
@@ -16,5 +16,19 @@ describe("revisarLecturaKm", () => {
 
   it("detecta el error de tipeo 586,653 en lugar de 176,653", () => {
     expect(revisarLecturaKm(176_100, 586_653)).toMatchObject({ ok: false, motivo: "salto" });
+  });
+});
+
+describe("leerKm", () => {
+  it("acepta separadores de miles", () => {
+    expect(leerKm("176,650")).toBe(176_650);
+    expect(leerKm("176 650")).toBe(176_650);
+    expect(leerKm("176.650")).toBe(176_650);
+  });
+
+  it("rechaza texto o negativos", () => {
+    expect(leerKm("")).toBeNull();
+    expect(leerKm("abc")).toBeNull();
+    expect(leerKm("-5")).toBeNull();
   });
 });

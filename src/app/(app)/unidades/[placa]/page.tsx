@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FormularioKm } from "@/components/formulario-km";
 import { Aviso, Placa, Tarjeta } from "@/components/ui";
 import { obtenerVehiculo } from "@/lib/data/vehiculos";
+import { registrarKm } from "./acciones";
 import { alertasDe, diasEntre, fechaCorta, hoyEnLima, proximoCambioAceite } from "@/lib/domain";
 
 const km = (n: number) => `${n.toLocaleString("es-PE")} km`;
@@ -71,6 +73,10 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
           <span className="block text-sm font-normal">{a.detalle}</span>
         </Aviso>
       ))}
+
+      <Tarjeta>
+        <FormularioKm accion={registrarKm.bind(null, v.placa)} kmAnterior={v.kmActual} />
+      </Tarjeta>
 
       <Tarjeta>
         <div className="flex items-baseline justify-between">
