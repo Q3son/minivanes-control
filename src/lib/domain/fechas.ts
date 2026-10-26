@@ -19,3 +19,21 @@ function partes(fecha: string): [number, number, number] {
   if (!y || !m || !d) throw new Error(`Fecha inválida: ${fecha}`);
   return [y, m - 1, d];
 }
+
+/** Fecha de hoy en Perú (YYYY-MM-DD), sin importar la zona horaria del servidor. */
+export function hoyEnLima(ahora: Date = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Lima",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(ahora);
+}
+
+const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "set", "oct", "nov", "dic"];
+
+/** "2026-11-05" → "5 nov 2026" */
+export function fechaCorta(fecha: string): string {
+  const [y, m, d] = fecha.split("-").map(Number);
+  return `${d} ${MESES[m - 1]} ${y}`;
+}
