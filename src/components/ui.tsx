@@ -16,7 +16,7 @@ export function Boton({
 }: ComponentProps<"button"> & { variante?: Variante }) {
   return (
     <button
-      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 font-bold transition-colors disabled:opacity-50 ${estilos[variante]} ${className}`}
+      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 font-bold transition active:scale-[0.98] disabled:opacity-50 ${estilos[variante]} ${className}`}
       {...props}
     />
   );
