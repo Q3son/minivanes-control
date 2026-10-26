@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FormularioKm } from "@/components/formulario-km";
 import { GananciaUnidad } from "@/components/ganancia-unidad";
+import { HistorialServicios } from "@/components/historial-servicios";
+import { listarServicios } from "@/lib/data/servicios";
 import { listarMovimientos } from "@/lib/data/movimientos";
 import { FormularioServicio } from "@/components/formulario-servicio";
 import { Aviso, Placa, Tarjeta } from "@/components/ui";
@@ -28,11 +30,10 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
 
   const hoy = hoyEnLima();
   const meses = mesesHasta(hoy.slice(0, 7), 6);
-  const movimientos = await listarMovimientos(
-    rangoDelMes(meses[0])[0],
-    rangoDelMes(meses[meses.length - 1])[1],
-    v.placa,
-  );
+  const [movimientos, servicios] = await Promise.all([
+    listarMovimientos(rangoDelMes(meses[0])[0], rangoDelMes(meses[meses.length - 1])[1], v.placa),
+    listarServicios(v.placa),
+  ]);
   const ganancia = gananciaPorMes(movimientos, meses, v.placa);
   const alertas = alertasDe(v, hoy);
   const proximo = proximoCambioAceite(v);
@@ -155,6 +156,8 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
           kmActual={v.kmActual}
         />
       </Tarjeta>
+
+      <HistorialServicios servicios={servicios} />
 
       <Tarjeta data-tour="documentos">
         <h2 className="font-bold">Documentos</h2>
