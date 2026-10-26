@@ -52,8 +52,15 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
         <div className="flex items-end justify-between gap-3 border-t border-gray-100 pt-3">
           <div>
             <p className="text-[13px] font-semibold text-gray-500">Kilometraje</p>
-            <p className="text-3xl font-extrabold tracking-tight tabular-nums">
-              {v.kmActual != null ? km(v.kmActual) : "—"}
+            <p className="text-3xl font-extrabold tracking-tight whitespace-nowrap tabular-nums">
+              {v.kmActual != null ? (
+                <>
+                  {v.kmActual.toLocaleString("es-PE")}{" "}
+                  <span className="text-lg font-bold text-gray-500">km</span>
+                </>
+              ) : (
+                "—"
+              )}
             </p>
             <p className="text-[13px] text-gray-500">
               {v.kmActualFecha ? `Anotado el ${fechaCorta(v.kmActualFecha)}` : "Sin lecturas"}
@@ -118,6 +125,7 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
 
       <Tarjeta>
         <FormularioServicio
+          key={v.kmActual ?? "sin-km"}
           accion={registrarMantenimiento.bind(null, v.placa)}
           kmActual={v.kmActual}
         />
