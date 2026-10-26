@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import type { EstadoServicio } from "@/app/(app)/unidades/[placa]/acciones";
 import { Aviso, Boton, Campo } from "@/components/ui";
 import { TIPOS_SERVICIO } from "@/lib/domain";
@@ -15,10 +15,18 @@ export function FormularioServicio({
   kmActual: number | null;
 }) {
   const [estado, enviar, guardando] = useActionState(accion, {});
+
+  // Tras guardar, limpiar costo y detalle para el siguiente registro.
+  const [estadoVisto, setEstadoVisto] = useState(estado);
+  const [vuelta, setVuelta] = useState(0);
+  if (estado !== estadoVisto) {
+    setEstadoVisto(estado);
+    if (estado.guardado) setVuelta((n) => n + 1);
+  }
   const e = estado.errores ?? {};
 
   return (
-    <form action={enviar} className="flex flex-col gap-4" noValidate>
+    <form key={vuelta} action={enviar} className="flex flex-col gap-4" noValidate>
       <h2 className="font-bold">Anotar mantenimiento</h2>
       <fieldset className="flex flex-wrap gap-2">
         <legend className="sr-only">¿Qué se hizo?</legend>
