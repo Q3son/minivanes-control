@@ -46,7 +46,7 @@ export function FormularioServicio({
           </label>
         ))}
       </fieldset>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-3">
         <Campo
           id="km-servicio"
           name="km"

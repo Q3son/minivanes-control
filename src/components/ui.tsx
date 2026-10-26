@@ -38,7 +38,7 @@ export function Campo({
   ...props
 }: ComponentProps<"input"> & { etiqueta: string; ayuda?: string; error?: string; id: string }) {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex min-w-0 flex-col gap-1.5">
       <label htmlFor={id} className="text-[15px] font-semibold">
         {etiqueta}
       </label>
@@ -46,7 +46,7 @@ export function Campo({
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={ayuda || error ? `${id}-nota` : undefined}
-        className="h-13 rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-[17px] placeholder:text-gray-400 placeholder:italic focus:border-marca focus:bg-white focus:outline-none aria-invalid:border-red-600"
+        className="h-13 w-full min-w-0 appearance-none rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-[17px] placeholder:text-gray-400 placeholder:italic focus:border-marca focus:bg-white focus:outline-none aria-invalid:border-red-600"
         {...props}
       />
       {(error || ayuda) && (

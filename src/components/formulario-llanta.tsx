@@ -199,7 +199,7 @@ export function FormularioLlanta({
             Más datos (opcional): marca, medida, precio
           </summary>
           <div className="mt-3 flex flex-col gap-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-3">
               <Campo
                 id="marca"
                 name="marca"
@@ -217,7 +217,7 @@ export function FormularioLlanta({
                 error={e.medida}
               />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-3">
               <Campo
                 id="mm"
                 name="mm"
