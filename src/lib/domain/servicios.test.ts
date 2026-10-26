@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { esquemaServicio } from "./servicios";
+import { conKmDesdeAnterior, esquemaServicio } from "./servicios";
 
 describe("esquemaServicio", () => {
   const base = {
@@ -27,5 +27,17 @@ describe("esquemaServicio", () => {
   it("exige el kilometraje", () => {
     const r = esquemaServicio.safeParse({ ...base, km: "" });
     expect(r.success).toBe(false);
+  });
+});
+
+describe("conKmDesdeAnterior", () => {
+  const base = { costo: 0, nota: null };
+  it("mide la distancia solo contra el anterior del mismo tipo", () => {
+    const lista = conKmDesdeAnterior([
+      { ...base, id: "3", tipo: "aceite", km: 118000, fecha: "2026-12-20" },
+      { ...base, id: "2", tipo: "frenos", km: 112000, fecha: "2026-11-30" },
+      { ...base, id: "1", tipo: "aceite", km: 109000, fecha: "2026-11-02" },
+    ]);
+    expect(lista.map((s) => s.kmDesdeAnterior)).toEqual([9000, null, null]);
   });
 });

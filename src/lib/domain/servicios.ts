@@ -38,3 +38,25 @@ export const esquemaServicio = z.object({
 });
 
 export type DatosServicio = z.infer<typeof esquemaServicio>;
+
+export interface Servicio {
+  id: string;
+  tipo: TipoServicio;
+  km: number;
+  costo: number;
+  nota: string | null;
+  fecha: string;
+}
+
+/**
+ * Agrega a cada mantenimiento cuántos km pasaron desde el anterior del mismo tipo
+ * (por ejemplo, entre dos cambios de aceite). Espera la lista del más nuevo al más antiguo.
+ */
+export function conKmDesdeAnterior(
+  servicios: Servicio[],
+): (Servicio & { kmDesdeAnterior: number | null })[] {
+  return servicios.map((s, i) => {
+    const anterior = servicios.slice(i + 1).find((o) => o.tipo === s.tipo);
+    return { ...s, kmDesdeAnterior: anterior ? s.km - anterior.km : null };
+  });
+}
