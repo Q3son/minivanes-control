@@ -1,24 +1,31 @@
 "use client";
 
-import { CONTINUAR, PARAM_RECORRIDO, RECORRIDOS, type Pantalla } from "@/lib/recorridos";
+import { CONTINUAR, RECORRIDOS, type Pantalla } from "@/lib/recorridos";
 
 const CLAVE_VISTO = "recorrido-inicio-visto";
+const CLAVE_SEGUIR = "recorrido-seguir-en";
+
+export interface Navegador {
+  push: (href: string) => void;
+  prefetch: (href: string) => void;
+}
 
 const ancla = (nombre: string) => `[data-tour="${nombre}"]`;
 
 /**
  * Inicia el recorrido de una pantalla. driver.js se carga solo cuando hace falta.
- * Si la pantalla tiene continuación (Unidades → ficha → Llantas), el último botón
- * abre la siguiente pantalla con `?recorrido=1` para seguir ahí.
+ * Si la pantalla tiene continuación (Unidades → ficha → Llantas), la siguiente
+ * pantalla se precarga mientras se lee el recorrido y el último botón la abre.
  */
-export async function iniciarRecorrido(pantalla: Pantalla, irA?: (href: string) => void) {
+export async function iniciarRecorrido(pantalla: Pantalla, nav?: Navegador) {
   const [{ driver }] = await Promise.all([import("driver.js"), esperarPantalla(pantalla)]);
   const pasos = RECORRIDOS[pantalla].filter(
     (p) => !p.ancla || document.querySelector(ancla(p.ancla)),
   );
   const sigue = CONTINUAR[pantalla];
-  const destino =
-    sigue && document.querySelector<HTMLAnchorElement>(`a${ancla(sigue.ancla)}`)?.href;
+  const href = sigue && document.querySelector<HTMLAnchorElement>(`a${ancla(sigue.ancla)}`)?.href;
+  const destino = href ? new URL(href).pathname : null;
+  if (destino && nav) nav.prefetch(destino);
 
   const recorrido = driver({
     showProgress: pasos.length > 1,
@@ -32,27 +39,23 @@ export async function iniciarRecorrido(pantalla: Pantalla, irA?: (href: string) 
     stageRadius: 14,
     overlayOpacity: 0.6,
     smoothScroll: true,
-    steps: pasos.map((p, i) => {
-      const ultimo = i === pasos.length - 1;
-      return {
-        element: p.ancla ? ancla(p.ancla) : undefined,
-        popover: {
-          title: p.titulo,
-          description: p.texto,
-          ...(ultimo && destino && irA
-            ? {
-                doneBtnText: sigue.texto,
-                onDoneClick: () => {
-                  recorrido.destroy();
-                  const url = new URL(destino);
-                  url.searchParams.set(PARAM_RECORRIDO, "1");
-                  irA(url.pathname + url.search);
-                },
-              }
-            : {}),
-        },
-      };
-    }),
+    steps: pasos.map((p, i) => ({
+      element: p.ancla ? ancla(p.ancla) : undefined,
+      popover: {
+        title: p.titulo,
+        description: p.texto,
+        ...(i === pasos.length - 1 && sigue && destino && nav
+          ? {
+              doneBtnText: sigue.texto,
+              onDoneClick: () => {
+                guardar(sessionStorage, CLAVE_SEGUIR, destino);
+                recorrido.destroy();
+                nav.push(destino);
+              },
+            }
+          : {}),
+      },
+    })),
   });
   recorrido.drive();
 }
@@ -71,23 +74,42 @@ function esperarPantalla(pantalla: Pantalla, limiteMs = 5000) {
         clearInterval(id);
         listo();
       }
-    }, 100);
+    }, 50);
   });
+}
+
+// El almacenamiento puede fallar (modo privado): en ese caso solo se pierde la comodidad.
+function guardar(almacen: Storage, clave: string, valor: string | null) {
+  try {
+    if (valor == null) almacen.removeItem(clave);
+    else almacen.setItem(clave, valor);
+  } catch {}
+}
+
+function leer(almacen: () => Storage, clave: string) {
+  try {
+    return almacen().getItem(clave);
+  } catch {
+    return null;
+  }
 }
 
 /** El recorrido de Inicio se muestra solo la primera vez en cada celular. */
 export function yaVioElRecorrido() {
-  try {
-    return localStorage.getItem(CLAVE_VISTO) === "1";
-  } catch {
-    return true;
-  }
+  return leer(() => localStorage, CLAVE_VISTO) === "1";
 }
 
 export function marcarRecorridoVisto() {
   try {
-    localStorage.setItem(CLAVE_VISTO, "1");
-  } catch {
-    // Sin almacenamiento (modo privado): simplemente se volverá a ofrecer.
-  }
+    guardar(localStorage, CLAVE_VISTO, "1");
+  } catch {}
+}
+
+/** Si el recorrido anterior pidió seguir en esta ruta, lo consume y devuelve true. */
+export function tocaSeguirEn(ruta: string) {
+  if (leer(() => sessionStorage, CLAVE_SEGUIR) !== ruta) return false;
+  try {
+    guardar(sessionStorage, CLAVE_SEGUIR, null);
+  } catch {}
+  return true;
 }

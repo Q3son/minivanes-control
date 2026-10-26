@@ -25,9 +25,6 @@ export const CONTINUAR: Partial<Record<Pantalla, Continuacion>> = {
   ficha: { ancla: "llantas", texto: "Ver sus llantas →" },
 };
 
-/** Parámetro de la URL que pide arrancar el recorrido al llegar a una pantalla. */
-export const PARAM_RECORRIDO = "recorrido";
-
 export const RECORRIDOS: Record<Pantalla, PasoRecorrido[]> = {
   inicio: [
     {

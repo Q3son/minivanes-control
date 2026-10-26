@@ -10,7 +10,12 @@ export function BotonRecorrido({ pantalla, texto }: { pantalla: Pantalla; texto:
   return (
     <button
       type="button"
-      onClick={() => void iniciarRecorrido(pantalla, (href) => router.push(href))}
+      onClick={() =>
+        void iniciarRecorrido(pantalla, {
+          push: (h) => router.push(h),
+          prefetch: (h) => router.prefetch(h),
+        })
+      }
       className="flex min-h-11 items-center gap-2 self-start rounded-full border border-marca/40 bg-marca-suave px-4 text-[15px] font-semibold text-marca transition active:scale-95"
     >
       <svg
