@@ -1,0 +1,8 @@
+# Despliegue en Netlify (plan gratuito, uso comercial permitido).
+# Netlify detecta Next.js y aplica su adaptador oficial automáticamente.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
