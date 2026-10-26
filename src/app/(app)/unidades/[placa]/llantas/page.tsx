@@ -1,3 +1,4 @@
+import { Insignia } from "@/components/estado";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Aviso, Placa, Tarjeta } from "@/components/ui";
@@ -38,7 +39,7 @@ export default async function Llantas({
         </span>
       </a>
     ) : (
-      <span className="grid aspect-[4/3] place-items-center rounded-lg bg-gray-100 text-xs text-gray-500">
+      <span className="grid aspect-[4/3] place-items-center rounded-lg bg-gray-100 text-xs text-gray-600">
         Sin foto
       </span>
     );
@@ -54,11 +55,11 @@ export default async function Llantas({
           l ? "border-gray-200 bg-white" : "border-dashed border-gray-300"
         }`}
       >
-        <span className="text-xs font-semibold text-gray-500">{p.nombre}</span>
+        <span className="text-xs font-semibold text-gray-600">{p.nombre}</span>
         {l ? (
           <>
             <b className="text-lg tabular-nums">{km(recorrido)}</b>
-            <span className="truncate text-xs text-gray-500">
+            <span className="truncate text-xs text-gray-600">
               {[l.marca, l.dot && `DOT ${l.dot}`].filter(Boolean).join(" · ") || "Sin datos"}
             </span>
           </>
@@ -73,7 +74,7 @@ export default async function Llantas({
     <>
       <Link
         href={`/unidades/${v.placa}`}
-        className="self-start text-sm font-semibold text-gray-500"
+        className="self-start text-sm font-semibold text-gray-600"
       >
         ← {v.placa}
       </Link>
@@ -130,9 +131,9 @@ export default async function Llantas({
       <Tarjeta>
         <h2 className="font-bold">Llantas que ya salieron</h2>
         {retiradas.length === 0 ? (
-          <p className="text-gray-500">Aquí verás cuánto duró cada llanta que cambies.</p>
+          <p className="text-gray-600">Aquí verás cuánto duró cada llanta que cambies.</p>
         ) : (
-          <ul className="divide-y divide-gray-100">
+          <ul className="divide-y divide-gray-200">
             {retiradas.map((l: RegistroLlanta) => (
               <li key={l.id} className="flex flex-col gap-2 py-3">
                 <div className="flex items-center gap-3">
@@ -141,21 +142,15 @@ export default async function Llantas({
                       {posiciones.find((p) => p.codigo === l.posicion)?.nombre ?? l.posicion} · duró{" "}
                       {km(l.kmRetiro != null ? l.kmRetiro - l.kmPuesta : null)}
                     </b>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-gray-600">
                       {fechaCorta(l.fechaPuesta)} →{" "}
                       {l.fechaRetiro ? fechaCorta(l.fechaRetiro) : "—"} · DOT {l.dot} →{" "}
                       {l.dotDevuelto}
                     </span>
                   </span>
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-[13px] font-semibold whitespace-nowrap ${
-                      l.dotCoincide === false
-                        ? "bg-red-50 text-red-700"
-                        : "bg-marca-suave text-marca"
-                    }`}
-                  >
+                  <Insignia tono={l.dotCoincide === false ? "peligro" : "ok"}>
                     {l.dotCoincide === false ? "No coincide" : "Coincide"}
-                  </span>
+                  </Insignia>
                 </div>
                 {(l.fotoPuesta || l.fotoRetiro) && (
                   <div className="grid grid-cols-2 gap-2">
