@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Chevron, FILA_TOCABLE } from "@/components/ui";
 import type { Alerta } from "@/lib/domain";
 
 export function ListaAlertas({ alertas }: { alertas: Alerta[] }) {
@@ -6,7 +7,7 @@ export function ListaAlertas({ alertas }: { alertas: Alerta[] }) {
     <ul className="divide-y divide-gray-100">
       {alertas.map((a) => (
         <li key={a.placa + a.tipo}>
-          <Link href={`/unidades/${a.placa}`} className="flex items-center gap-3 py-3">
+          <Link href={`/unidades/${a.placa}`} className={FILA_TOCABLE}>
             <span
               aria-hidden
               className={`size-2.5 shrink-0 rounded-full ${
@@ -19,9 +20,7 @@ export function ListaAlertas({ alertas }: { alertas: Alerta[] }) {
                 {a.placa} · {a.detalle}
               </span>
             </span>
-            <span aria-hidden className="text-gray-400">
-              ›
-            </span>
+            <Chevron />
           </Link>
         </li>
       ))}

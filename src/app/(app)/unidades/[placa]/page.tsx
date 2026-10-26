@@ -36,7 +36,10 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
 
   return (
     <>
-      <Link href="/unidades" className="self-start text-sm font-semibold text-gray-500">
+      <Link
+        href="/unidades"
+        className="-mx-2 self-start rounded-lg px-2 py-1 text-sm font-semibold text-gray-500 active:bg-gray-100"
+      >
         ← Unidades
       </Link>
       <Tarjeta>
@@ -69,13 +72,13 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
           <div className="flex gap-2">
             <Link
               href={`/unidades/${v.placa}/llantas`}
-              className="rounded-full bg-marca px-4 py-2 text-sm font-bold text-white"
+              className="rounded-full bg-marca px-4 py-2 text-sm font-bold text-white transition active:scale-95"
             >
               Llantas
             </Link>
             <Link
               href={`/unidades/${v.placa}/editar`}
-              className="rounded-full bg-gray-100 px-4 py-2 text-sm font-bold"
+              className="rounded-full bg-gray-100 px-4 py-2 text-sm font-bold transition active:scale-95 active:bg-gray-200"
             >
               Editar
             </Link>
