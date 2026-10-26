@@ -7,6 +7,9 @@ const figtree = Figtree({ subsets: ["latin"], variable: "--font-figtree" });
 export const metadata: Metadata = {
   title: "Control de Minivanes",
   description: "Cobros, gastos, mantenimientos y llantas de cada unidad, por placa.",
+  applicationName: "Minivanes",
+  appleWebApp: { capable: true, title: "Minivanes", statusBarStyle: "default" },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
