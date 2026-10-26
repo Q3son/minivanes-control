@@ -3,8 +3,8 @@ import { alertasDe, alertasDeFlota, proximoCambioAceite } from "./alertas";
 import type { Vehiculo } from "./tipos";
 
 const base: Vehiculo = {
-  placa: "XBG963",
-  conductor: "Edwin",
+  placa: "ABC123",
+  conductor: "Juan Pérez",
   marca: "Mercedes-Benz",
   cuotaSemanal: 1050,
   traserasDobles: true,

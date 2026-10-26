@@ -14,7 +14,7 @@ body:
     attributes:
       label: Pasos para reproducirlo
       placeholder: |
-        1. Entrar a la placa XBG963
+        1. Entrar a la placa ABC123
         2. Tocar "Actualizar kilometraje"
     validations:
       required: true

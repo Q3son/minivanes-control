@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { dotCoincide, kmRecorridos, normalizarDot } from "./llantas";
 
 const llanta = {
-  placa: "Y2H016",
+  placa: "GHI789",
   posicion: "DI",
   dot: "1826",
   kmPuesta: 158_300,
