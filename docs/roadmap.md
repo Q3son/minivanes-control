@@ -10,11 +10,11 @@ Cada punto es un issue y una rama. Se marca cuando su PR se fusiona.
 
 ## v0.2 · Lo que el cliente usa cada semana (meta: 1 de noviembre)
 
-- [ ] Inicio de sesión del dueño (Supabase Auth, enlace mágico al correo)
-- [ ] Unidades: alta, edición y búsqueda por placa
-- [ ] Cobro semanal en un toque y gasto por categoría
-- [ ] Kilometraje con foto del tablero y validación
-- [ ] Alertas en la pantalla de inicio
+- [x] Inicio de sesión del dueño (Supabase Auth, enlace mágico al correo)
+- [x] Unidades: alta, edición y búsqueda por placa
+- [x] Cobro semanal en un toque y gasto por categoría
+- [x] Kilometraje con validación (la foto del tablero queda para v0.3)
+- [x] Alertas en la pantalla de inicio
 
 ## v0.3 · Llantas y reportes
 
