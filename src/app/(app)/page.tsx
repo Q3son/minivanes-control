@@ -1,9 +1,17 @@
 import Link from "next/link";
 import { Encabezado } from "@/components/encabezado";
+import { ListaAlertas } from "@/components/lista-alertas";
 import { Aviso, Placa, Tarjeta } from "@/components/ui";
 import { listarMovimientos } from "@/lib/data/movimientos";
 import { listarVehiculos } from "@/lib/data/vehiculos";
-import { cobrosDeLaSemana, hoyEnLima, lunesDe, rangoDelMes, resumenMes } from "@/lib/domain";
+import {
+  alertasDeFlota,
+  cobrosDeLaSemana,
+  hoyEnLima,
+  lunesDe,
+  rangoDelMes,
+  resumenMes,
+} from "@/lib/domain";
 import { cobrarCuota } from "./acciones";
 
 const MESES = [
@@ -42,6 +50,7 @@ export default async function Inicio({
   const resumen = resumenMes(movimientos, mes);
   const cobros = cobrosDeLaSemana(vehiculos, movimientos, lunes);
   const pagaron = cobros.filter((c) => c.cobrado != null).length;
+  const alertas = alertasDeFlota(vehiculos, hoy);
 
   return (
     <>
@@ -75,6 +84,18 @@ export default async function Inicio({
           </div>
         </dl>
       </section>
+
+      {alertas.length > 0 && (
+        <Tarjeta>
+          <div className="flex items-baseline justify-between">
+            <h2 className="font-bold">Para atender</h2>
+            <Link href="/alertas" className="text-sm font-semibold text-marca">
+              Ver las {alertas.length}
+            </Link>
+          </div>
+          <ListaAlertas alertas={alertas.slice(0, 3)} />
+        </Tarjeta>
+      )}
 
       <Link
         href="/gastos/nuevo"
