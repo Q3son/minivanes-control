@@ -23,9 +23,9 @@ export async function crearClienteServidor() {
   });
 }
 
-/** Devuelve el usuario con sesión o null. Valida el token contra Supabase, no solo la cookie. */
+/** Devuelve el id del usuario con sesión o null. Verifica la firma del token, no solo la cookie. */
 export async function usuarioActual() {
   const supabase = await crearClienteServidor();
-  const { data } = await supabase.auth.getUser();
-  return data.user;
+  const { data } = await supabase.auth.getClaims();
+  return data?.claims.sub ?? null;
 }
