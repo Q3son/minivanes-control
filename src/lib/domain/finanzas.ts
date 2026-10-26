@@ -31,3 +31,21 @@ export function rankingPorUnidad(movimientos: Movimiento[], mes: string, placas:
 }
 
 const redondear = (n: number) => Math.round(n * 100) / 100;
+
+/** Los últimos `n` meses (YYYY-MM) que terminan en `mes`, del más antiguo al más reciente. */
+export function mesesHasta(mes: string, n: number): string[] {
+  const [y, m] = mes.split("-").map(Number);
+  return Array.from({ length: n }, (_, i) => {
+    const d = new Date(Date.UTC(y, m - 1 - (n - 1 - i), 1));
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+  });
+}
+
+/** Cobrado, gastado y ganancia de cada mes; si se pasa placa, solo de esa unidad. */
+export function gananciaPorMes(
+  movimientos: Movimiento[],
+  meses: string[],
+  placa?: Placa,
+): (Resumen & { mes: string })[] {
+  return meses.map((mes) => ({ mes, ...resumenMes(movimientos, mes, placa) }));
+}

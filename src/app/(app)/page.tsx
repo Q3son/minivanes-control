@@ -3,7 +3,7 @@ import { BotonEnviar } from "@/components/boton-enviar";
 import { Insignia } from "@/components/estado";
 import { Encabezado } from "@/components/encabezado";
 import { ListaAlertas } from "@/components/lista-alertas";
-import { Aviso, Placa, Tarjeta } from "@/components/ui";
+import { Aviso, Chevron, FILA_TOCABLE, Placa, Tarjeta } from "@/components/ui";
 import { listarMovimientos } from "@/lib/data/movimientos";
 import { listarVehiculos } from "@/lib/data/vehiculos";
 import {
@@ -12,26 +12,11 @@ import {
   hoyEnLima,
   lunesDe,
   rangoDelMes,
+  rankingPorUnidad,
   resumenMes,
 } from "@/lib/domain";
+import { nombreMes, soles } from "@/lib/formato";
 import { cobrarCuota } from "./acciones";
-
-const MESES = [
-  "enero",
-  "febrero",
-  "marzo",
-  "abril",
-  "mayo",
-  "junio",
-  "julio",
-  "agosto",
-  "setiembre",
-  "octubre",
-  "noviembre",
-  "diciembre",
-];
-const soles = (n: number) =>
-  `S/ ${n.toLocaleString("es-PE", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
 
 export default async function Inicio({
   searchParams,
@@ -53,6 +38,12 @@ export default async function Inicio({
   const cobros = cobrosDeLaSemana(vehiculos, movimientos, lunes);
   const pagaron = cobros.filter((c) => c.cobrado != null).length;
   const alertas = alertasDeFlota(vehiculos, hoy);
+  const ranking = rankingPorUnidad(
+    movimientos,
+    mes,
+    vehiculos.map((v) => v.placa),
+  );
+  const conductor = new Map(vehiculos.map((v) => [v.placa, v.conductor]));
 
   return (
     <>
@@ -63,9 +54,7 @@ export default async function Inicio({
         data-tour="resumen"
         className="flex flex-col gap-3 rounded-2xl bg-panel p-5 text-panel-texto"
       >
-        <p className="text-sm font-semibold text-panel-suave">
-          Te queda en {MESES[Number(mes.slice(5)) - 1]}
-        </p>
+        <p className="text-sm font-semibold text-panel-suave">Te queda en {nombreMes(mes)}</p>
         <p className="text-4xl font-extrabold tracking-tight tabular-nums">{soles(resumen.neto)}</p>
         <dl className="grid grid-cols-2 gap-3 border-t border-white/10 pt-3">
           <div>
@@ -154,6 +143,33 @@ export default async function Inicio({
           </ul>
         )}
       </Tarjeta>
+
+      {ranking.length > 0 && (
+        <Tarjeta data-tour="ranking">
+          <div className="flex items-baseline justify-between">
+            <h2 className="font-bold">Ganancia por unidad</h2>
+            <span className="text-sm text-gray-600">en {nombreMes(mes)}</span>
+          </div>
+          <ul className="divide-y divide-gray-200">
+            {ranking.map((r) => (
+              <li key={r.placa}>
+                <Link href={`/unidades/${r.placa}`} className={FILA_TOCABLE}>
+                  <Placa placa={r.placa} />
+                  <span className="min-w-0 flex-1 truncate font-semibold">
+                    {conductor.get(r.placa) ?? "Sin conductor"}
+                  </span>
+                  <span
+                    className={`font-bold tabular-nums ${r.neto < 0 ? "text-red-800" : "text-tinta"}`}
+                  >
+                    {soles(r.neto)}
+                  </span>
+                  <Chevron />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Tarjeta>
+      )}
     </>
   );
 }

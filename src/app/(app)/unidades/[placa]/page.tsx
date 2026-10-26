@@ -2,11 +2,22 @@ import { Insignia, type Tono } from "@/components/estado";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FormularioKm } from "@/components/formulario-km";
+import { GananciaUnidad } from "@/components/ganancia-unidad";
+import { listarMovimientos } from "@/lib/data/movimientos";
 import { FormularioServicio } from "@/components/formulario-servicio";
 import { Aviso, Placa, Tarjeta } from "@/components/ui";
 import { obtenerVehiculo } from "@/lib/data/vehiculos";
 import { registrarKm, registrarMantenimiento } from "./acciones";
-import { alertasDe, diasEntre, fechaCorta, hoyEnLima, proximoCambioAceite } from "@/lib/domain";
+import {
+  alertasDe,
+  diasEntre,
+  fechaCorta,
+  gananciaPorMes,
+  hoyEnLima,
+  mesesHasta,
+  proximoCambioAceite,
+  rangoDelMes,
+} from "@/lib/domain";
 
 const km = (n: number) => `${n.toLocaleString("es-PE")} km`;
 
@@ -16,6 +27,13 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
   if (!v) notFound();
 
   const hoy = hoyEnLima();
+  const meses = mesesHasta(hoy.slice(0, 7), 6);
+  const movimientos = await listarMovimientos(
+    rangoDelMes(meses[0])[0],
+    rangoDelMes(meses[meses.length - 1])[1],
+    v.placa,
+  );
+  const ganancia = gananciaPorMes(movimientos, meses, v.placa);
   const alertas = alertasDe(v, hoy);
   const proximo = proximoCambioAceite(v);
   const faltan = proximo != null && v.kmActual != null ? proximo - v.kmActual : null;
@@ -94,6 +112,8 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
           <span className="block text-sm font-normal">{a.detalle}</span>
         </Aviso>
       ))}
+
+      <GananciaUnidad meses={ganancia} />
 
       <Tarjeta data-tour="km">
         <FormularioKm accion={registrarKm.bind(null, v.placa)} kmAnterior={v.kmActual} />
