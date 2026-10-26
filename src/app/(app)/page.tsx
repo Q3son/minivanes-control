@@ -5,15 +5,19 @@ import { Encabezado } from "@/components/encabezado";
 import { ListaAlertas } from "@/components/lista-alertas";
 import { Aviso, Chevron, FILA_TOCABLE, Placa, Tarjeta } from "@/components/ui";
 import { listarMovimientos } from "@/lib/data/movimientos";
+import { obtenerPerfil } from "@/lib/data/perfil";
 import { listarVehiculos } from "@/lib/data/vehiculos";
 import {
   alertasDeFlota,
   cobrosDeLaSemana,
+  fechaLarga,
+  horaEnLima,
   hoyEnLima,
   lunesDe,
   rangoDelMes,
   rankingPorUnidad,
   resumenMes,
+  saludoSegunHora,
 } from "@/lib/domain";
 import { nombreMes, soles } from "@/lib/formato";
 import { cobrarCuota } from "./acciones";
@@ -30,10 +34,12 @@ export default async function Inicio({
   const [inicioMes, finMes] = rangoDelMes(mes);
   const desde = lunes < inicioMes ? lunes : inicioMes;
 
-  const [vehiculos, movimientos] = await Promise.all([
+  const [vehiculos, movimientos, perfil] = await Promise.all([
     listarVehiculos(),
     listarMovimientos(desde, finMes),
+    obtenerPerfil(),
   ]);
+  const saludo = saludoSegunHora(horaEnLima());
   const resumen = resumenMes(movimientos, mes);
   const cobros = cobrosDeLaSemana(vehiculos, movimientos, lunes);
   const pagaron = cobros.filter((c) => c.cobrado != null).length;
@@ -47,7 +53,22 @@ export default async function Inicio({
 
   return (
     <>
-      <Encabezado titulo="Inicio" />
+      <Encabezado
+        antetitulo={fechaLarga(hoy)}
+        titulo={perfil.nombre ? `${saludo}, ${perfil.nombre}` : saludo}
+      />
+      {!perfil.nombre && (
+        <Link
+          href="/perfil"
+          className="flex min-h-14 items-center gap-3 rounded-2xl border border-marca/40 bg-marca-suave px-4 py-3 text-marca transition active:scale-[0.99]"
+        >
+          <span className="flex-1">
+            <b className="block">¿Cómo quieres que te saludemos?</b>
+            <span className="text-sm text-gray-700">Escribe tu nombre en tu perfil.</span>
+          </span>
+          <Chevron />
+        </Link>
+      )}
       {gasto === "ok" && <Aviso tono="exito">Gasto guardado.</Aviso>}
 
       <section
