@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BotonEnviar } from "@/components/boton-enviar";
+import { Insignia } from "@/components/estado";
 import { Encabezado } from "@/components/encabezado";
 import { ListaAlertas } from "@/components/lista-alertas";
 import { Aviso, Placa, Tarjeta } from "@/components/ui";
@@ -59,7 +60,7 @@ export default async function Inicio({
         titulo="Inicio"
         accion={
           <form action="/auth/salir" method="post">
-            <button className="text-sm font-semibold text-gray-500">Salir</button>
+            <button className="min-h-11 px-2 text-[15px] font-semibold text-gray-700">Salir</button>
           </form>
         }
       />
@@ -90,7 +91,10 @@ export default async function Inicio({
         <Tarjeta>
           <div className="flex items-baseline justify-between">
             <h2 className="font-bold">Para atender</h2>
-            <Link href="/alertas" className="text-sm font-semibold text-marca">
+            <Link
+              href="/alertas"
+              className="-my-2 inline-flex min-h-11 items-center text-[15px] font-semibold text-marca underline-offset-4 active:underline"
+            >
               Ver las {alertas.length}
             </Link>
           </div>
@@ -100,46 +104,49 @@ export default async function Inicio({
 
       <Link
         href="/gastos/nuevo"
-        className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-center font-bold"
+        className="flex min-h-12 items-center justify-center gap-2 rounded-xl border-[1.5px] border-marca bg-white px-4 font-bold text-marca transition active:scale-[0.98] active:bg-marca-suave"
       >
+        <span aria-hidden className="text-xl leading-none">
+          +
+        </span>
         Anotar gasto
       </Link>
 
       <Tarjeta>
         <div className="flex items-baseline justify-between">
           <h2 className="font-bold">Cobros de esta semana</h2>
-          <span className="text-sm text-gray-500 tabular-nums">
+          <span className="text-sm text-gray-600 tabular-nums">
             {pagaron} de {cobros.length}
           </span>
         </div>
         {cobros.length === 0 ? (
-          <p className="text-gray-500">
+          <p className="text-gray-600">
             Agrega tus unidades para ver aquí los cobros.{" "}
             <Link href="/unidades/nueva" className="font-semibold text-marca">
               Agregar unidad
             </Link>
           </p>
         ) : (
-          <ul className="divide-y divide-gray-100">
+          <ul className="divide-y divide-gray-200">
             {cobros.map(({ vehiculo: v, cobrado }) => (
               <li key={v.placa} className="flex items-center gap-3 py-3">
                 <Placa placa={v.placa} />
                 <span className="min-w-0 flex-1">
                   <b className="block truncate font-semibold">{v.conductor ?? "Sin conductor"}</b>
-                  <span className="text-sm text-gray-500 tabular-nums">
+                  <span className="text-sm text-gray-600 tabular-nums">
                     {cobrado != null
                       ? `Cobrado ${soles(cobrado)}`
                       : `Cuota ${soles(v.cuotaSemanal)}`}
                   </span>
                 </span>
                 {cobrado != null ? (
-                  <span className="text-sm font-semibold text-marca">✓ Cobrado</span>
+                  <Insignia tono="ok">Cobrado</Insignia>
                 ) : (
                   <form action={cobrarCuota}>
                     <input type="hidden" name="placa" value={v.placa} />
                     <BotonEnviar
                       pendiente="Cobrando…"
-                      className="rounded-full border-[1.5px] border-marca px-4 py-1.5 text-sm font-bold text-marca transition active:scale-95 disabled:opacity-60"
+                      className="min-h-11 rounded-full bg-marca px-5 text-sm font-bold text-white transition active:scale-95 disabled:opacity-60"
                     >
                       Cobrar
                     </BotonEnviar>

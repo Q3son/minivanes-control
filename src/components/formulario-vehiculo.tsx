@@ -25,7 +25,7 @@ export function FormularioVehiculo({ accion, vehiculo }: { accion: Accion; vehic
           autoComplete="off"
           required
           error={e.placa}
-          className="h-13 rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-2xl font-bold tracking-widest uppercase"
+          className="h-13 rounded-xl border border-gray-500 bg-white px-3.5 text-2xl font-bold tracking-widest uppercase"
         />
       )}
       <Campo

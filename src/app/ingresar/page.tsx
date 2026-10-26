@@ -13,7 +13,7 @@ export default async function Ingresar({
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center gap-6 px-4 py-10">
       <header>
-        <p className="text-sm font-semibold tracking-wider text-gray-500 uppercase">
+        <p className="text-sm font-semibold tracking-wider text-gray-600 uppercase">
           Mis minivanes
         </p>
         <h1 className="text-3xl font-extrabold tracking-tight">Entra a tu cuenta</h1>

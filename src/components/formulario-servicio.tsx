@@ -33,7 +33,7 @@ export function FormularioServicio({
         {Object.entries(TIPOS_SERVICIO).map(([valor, texto]) => (
           <label
             key={valor}
-            className="cursor-pointer rounded-full border border-gray-200 px-3.5 py-2 text-[15px] font-semibold has-checked:border-marca has-checked:bg-marca-suave has-checked:text-marca"
+            className="cursor-pointer rounded-full border border-gray-400 bg-white px-3.5 py-2 text-[15px] font-semibold has-checked:border-marca has-checked:bg-marca-suave has-checked:text-marca"
           >
             <input
               type="radio"

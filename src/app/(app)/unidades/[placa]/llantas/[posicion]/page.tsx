@@ -24,7 +24,7 @@ export default async function CambiarLlanta({
     <>
       <Link
         href={`/unidades/${v.placa}/llantas`}
-        className="self-start text-sm font-semibold text-gray-500"
+        className="self-start text-sm font-semibold text-gray-600"
       >
         ← Llantas
       </Link>

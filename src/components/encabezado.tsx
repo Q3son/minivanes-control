@@ -4,7 +4,7 @@ export function Encabezado({ titulo, accion }: { titulo: string; accion?: ReactN
   return (
     <header className="flex items-end justify-between gap-3">
       <div>
-        <p className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
+        <p className="text-xs font-semibold tracking-wider text-gray-600 uppercase">
           Mis minivanes
         </p>
         <h1 className="text-2xl font-extrabold tracking-tight">{titulo}</h1>

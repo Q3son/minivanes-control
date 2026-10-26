@@ -43,7 +43,7 @@ export function FormularioKm({
         value={valor}
         onChange={(e) => setValor(e.target.value)}
         aria-describedby="km-nota"
-        className="h-14 rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-2xl font-bold tabular-nums focus:border-marca focus:bg-white focus:outline-none"
+        className="h-14 rounded-xl border border-gray-500 bg-white px-3.5 text-2xl font-bold tabular-nums focus:border-marca focus:bg-white focus:outline-none"
       />
       <div id="km-nota">
         {estado.estado === "error" && <Aviso tono="error">{estado.mensaje}</Aviso>}
