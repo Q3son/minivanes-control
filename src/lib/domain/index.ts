@@ -7,3 +7,4 @@ export * from "./finanzas";
 export * from "./vehiculo";
 export * from "./movimientos";
 export * from "./servicios";
+export * from "./perfil";
