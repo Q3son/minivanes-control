@@ -4,7 +4,7 @@ import type { Alerta } from "@/lib/domain";
 
 export function ListaAlertas({ alertas }: { alertas: Alerta[] }) {
   return (
-    <ul className="divide-y divide-gray-100">
+    <ul className="divide-y divide-gray-200">
       {alertas.map((a) => (
         <li key={a.placa + a.tipo}>
           <Link href={`/unidades/${a.placa}`} className={FILA_TOCABLE}>
@@ -16,7 +16,7 @@ export function ListaAlertas({ alertas }: { alertas: Alerta[] }) {
             />
             <span className="min-w-0 flex-1">
               <b className="block font-semibold">{a.titulo}</b>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-600">
                 {a.placa} · {a.detalle}
               </span>
             </span>

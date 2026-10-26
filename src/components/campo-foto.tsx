@@ -57,7 +57,7 @@ export function CampoFoto({
   return (
     <div className="flex flex-col gap-2">
       <span className="text-[15px] font-semibold">{etiqueta}</span>
-      <div className="relative grid aspect-[4/3] max-w-full place-items-center overflow-hidden rounded-xl border-2 border-dashed border-marca/40 bg-gray-50 p-4 text-center text-sm text-gray-500">
+      <div className="relative grid aspect-[4/3] max-w-full place-items-center overflow-hidden rounded-xl border-2 border-dashed border-marca/40 bg-gray-50 p-4 text-center text-sm text-gray-600">
         {estado.tipo === "lista" ? (
           // eslint-disable-next-line @next/next/no-img-element -- vista previa local (blob:)
           <img

@@ -31,8 +31,8 @@ export function Navegacion({ alertas = 0 }: { alertas?: number }) {
               <Link
                 href={href}
                 aria-current={activo ? "page" : undefined}
-                className={`relative flex flex-col items-center gap-0.5 py-2 text-xs font-semibold ${
-                  activo ? "text-marca" : "text-gray-500"
+                className={`relative flex min-h-14 flex-col items-center justify-center gap-0.5 text-[13px] transition-colors active:bg-gray-100 ${
+                  activo ? "font-bold text-marca" : "font-semibold text-gray-600"
                 }`}
               >
                 <svg
@@ -54,6 +54,12 @@ export function Navegacion({ alertas = 0 }: { alertas?: number }) {
                   </span>
                 )}
                 {texto}
+                {activo && (
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-6 top-0 h-[3px] rounded-b bg-marca"
+                  />
+                )}
               </Link>
             </li>
           );

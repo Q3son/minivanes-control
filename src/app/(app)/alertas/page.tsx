@@ -13,12 +13,12 @@ export default async function Alertas() {
         {alertas.length ? (
           <ListaAlertas alertas={alertas} />
         ) : (
-          <p className="py-6 text-center text-gray-500">
+          <p className="py-6 text-center text-gray-600">
             Todo en orden. Ninguna unidad necesita atención.
           </p>
         )}
       </Tarjeta>
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-gray-600">
         El aviso de aceite aparece cuando faltan {AVISO_ACEITE_KM.toLocaleString("es-PE")} km. El de
         SOAT y revisión técnica, {AVISO_DOCUMENTO_DIAS} días antes de vencer.
       </p>
