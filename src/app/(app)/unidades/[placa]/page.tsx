@@ -25,15 +25,16 @@ const km = (n: number) => `${n.toLocaleString("es-PE")} km`;
 
 export default async function FichaUnidad({ params }: { params: Promise<{ placa: string }> }) {
   const { placa } = await params;
-  const v = await obtenerVehiculo(placa);
-  if (!v) notFound();
-
   const hoy = hoyEnLima();
   const meses = mesesHasta(hoy.slice(0, 7), 6);
-  const [movimientos, servicios] = await Promise.all([
-    listarMovimientos(rangoDelMes(meses[0])[0], rangoDelMes(meses[meses.length - 1])[1], v.placa),
-    listarServicios(v.placa),
+  // Todo en paralelo: una sola ida y vuelta a la base de datos.
+  const [v, movimientos, servicios] = await Promise.all([
+    obtenerVehiculo(placa),
+    listarMovimientos(rangoDelMes(meses[0])[0], rangoDelMes(meses[meses.length - 1])[1], placa),
+    listarServicios(placa),
   ]);
+  if (!v) notFound();
+
   const ganancia = gananciaPorMes(movimientos, meses, v.placa);
   const alertas = alertasDe(v, hoy);
   const proximo = proximoCambioAceite(v);
