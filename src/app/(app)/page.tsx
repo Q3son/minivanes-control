@@ -55,21 +55,21 @@ export default async function Inicio({
       />
       {gasto === "ok" && <Aviso tono="exito">Gasto guardado.</Aviso>}
 
-      <section className="flex flex-col gap-3 rounded-2xl bg-[#0F1D18] p-5 text-[#F2F7F4]">
-        <p className="text-sm font-semibold text-[#9DB3A9]">
+      <section className="flex flex-col gap-3 rounded-2xl bg-panel p-5 text-panel-texto">
+        <p className="text-sm font-semibold text-panel-suave">
           Te queda en {MESES[Number(mes.slice(5)) - 1]}
         </p>
         <p className="text-4xl font-extrabold tracking-tight tabular-nums">{soles(resumen.neto)}</p>
         <dl className="grid grid-cols-2 gap-3 border-t border-white/10 pt-3">
           <div>
-            <dt className="text-sm text-[#9DB3A9]">Cobraste</dt>
-            <dd className="text-lg font-bold text-[#7BE0B4] tabular-nums">
+            <dt className="text-sm text-panel-suave">Cobraste</dt>
+            <dd className="text-lg font-bold text-panel-sube tabular-nums">
               {soles(resumen.cobrado)}
             </dd>
           </div>
           <div>
-            <dt className="text-sm text-[#9DB3A9]">Gastaste</dt>
-            <dd className="text-lg font-bold text-[#FFB4A9] tabular-nums">
+            <dt className="text-sm text-panel-suave">Gastaste</dt>
+            <dd className="text-lg font-bold text-panel-baja tabular-nums">
               {soles(resumen.gastado)}
             </dd>
           </div>
