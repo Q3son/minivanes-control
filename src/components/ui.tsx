@@ -24,7 +24,9 @@ export function Boton({
 
 export function Tarjeta({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <section className={`flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-sm ${className}`}>
+    <section
+      className={`flex flex-col gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm ${className}`}
+    >
       {children}
     </section>
   );
@@ -46,11 +48,11 @@ export function Campo({
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={ayuda || error ? `${id}-nota` : undefined}
-        className="h-13 w-full min-w-0 appearance-none rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-[17px] placeholder:text-gray-400 placeholder:italic focus:border-marca focus:bg-white focus:outline-none aria-invalid:border-red-600"
+        className="h-13 w-full min-w-0 appearance-none rounded-xl border border-gray-500 bg-white px-3.5 text-[17px] placeholder:text-gray-500 placeholder:italic focus:border-marca focus:bg-white focus:outline-none aria-invalid:border-red-600"
         {...props}
       />
       {(error || ayuda) && (
-        <p id={`${id}-nota`} className={`text-sm ${error ? "text-red-700" : "text-gray-500"}`}>
+        <p id={`${id}-nota`} className={`text-sm ${error ? "text-red-700" : "text-gray-600"}`}>
           {error ?? ayuda}
         </p>
       )}
@@ -79,10 +81,10 @@ export function Aviso({
   children: ReactNode;
 }) {
   const color = {
-    exito: "bg-marca-suave text-marca",
-    alerta: "bg-amber-50 text-amber-800",
-    error: "bg-red-50 text-red-700",
-    info: "bg-gray-100 text-tinta",
+    exito: "bg-marca-suave text-marca border-l-4 border-marca",
+    alerta: "bg-amber-50 text-amber-900 border-l-4 border-amber-500",
+    error: "bg-red-50 text-red-800 border-l-4 border-red-600",
+    info: "bg-gray-100 text-tinta border-l-4 border-gray-400",
   }[tono];
   return (
     <div
@@ -103,7 +105,7 @@ export function Chevron() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="size-5 shrink-0 text-gray-400"
+      className="size-5 shrink-0 text-gray-500"
       fill="none"
       stroke="currentColor"
       strokeWidth={2.2}

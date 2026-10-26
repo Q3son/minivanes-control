@@ -25,7 +25,7 @@ export function FormularioGasto({
           {placas.map(({ placa, conductor }) => (
             <label
               key={placa}
-              className="flex cursor-pointer flex-col items-center gap-1 rounded-xl border-[1.5px] border-gray-200 p-2 has-checked:border-marca has-checked:bg-marca-suave"
+              className="flex cursor-pointer flex-col items-center gap-1 rounded-xl border-[1.5px] border-gray-400 bg-white p-2 has-checked:border-marca has-checked:bg-marca-suave"
             >
               <input
                 type="radio"
@@ -35,7 +35,7 @@ export function FormularioGasto({
                 className="sr-only"
               />
               <span className="text-sm font-extrabold tracking-wider">{placa}</span>
-              <span className="truncate text-xs text-gray-500">
+              <span className="truncate text-xs text-gray-600">
                 {conductor?.split(" ")[0] ?? "—"}
               </span>
             </label>
@@ -50,7 +50,7 @@ export function FormularioGasto({
           {Object.entries(CATEGORIAS_GASTO).map(([valor, texto]) => (
             <label
               key={valor}
-              className="cursor-pointer rounded-full border border-gray-200 px-3.5 py-2 text-[15px] font-semibold has-checked:border-marca has-checked:bg-marca-suave has-checked:text-marca"
+              className="cursor-pointer rounded-full border border-gray-400 bg-white px-3.5 py-2 text-[15px] font-semibold has-checked:border-marca has-checked:bg-marca-suave has-checked:text-marca"
             >
               <input type="radio" name="categoria" value={valor} className="sr-only" />
               {texto}
@@ -76,7 +76,7 @@ export function FormularioGasto({
         defaultValue={hoy}
         error={e.fecha}
       />
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-gray-600">
         Aceite, frenos y llantas se anotan en su propia sección y su costo se suma solo.
       </p>
       <Boton type="submit" disabled={guardando}>

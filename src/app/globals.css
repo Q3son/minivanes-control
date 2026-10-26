@@ -4,13 +4,19 @@
   --font-sans: var(--font-figtree), "Segoe UI", Roboto, Arial, sans-serif;
   --color-marca: #0b6e4f;
   --color-marca-suave: #e2f2eb;
-  --color-fondo: #f3f4f6;
+  --color-fondo: #eceef1;
   --color-tinta: #101418;
   --color-panel: #0f1d18;
   --color-panel-texto: #f2f7f4;
   --color-panel-suave: #9db3a9;
   --color-panel-sube: #7be0b4;
   --color-panel-baja: #ffb4a9;
+}
+
+/* Foco visible y grueso para teclado (WCAG 2.4.7 / 2.4.13). */
+:focus-visible {
+  outline: 3px solid var(--color-marca);
+  outline-offset: 2px;
 }
 
 body {

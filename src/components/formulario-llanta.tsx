@@ -23,7 +23,7 @@ const CAMPOS_PASO_1 = ["dotDevuelto", "mmRetiro", "fotoRetiro"];
 function Pasos({ actual, total }: { actual: number; total: number }) {
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-sm font-semibold text-gray-500">
+      <p className="text-sm font-semibold text-gray-600">
         Paso {actual} de {total}
       </p>
       <div className="flex gap-1.5" aria-hidden>

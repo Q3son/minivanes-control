@@ -27,7 +27,7 @@ export default async function Unidades({
         accion={
           <Link
             href="/unidades/nueva"
-            className="rounded-full bg-marca px-4 py-2 text-sm font-bold text-white transition active:scale-95"
+            className="inline-flex min-h-11 items-center rounded-full bg-marca px-4 text-sm font-bold text-white transition active:scale-95"
           >
             Agregar
           </Link>
@@ -43,25 +43,25 @@ export default async function Unidades({
           type="search"
           defaultValue={q}
           placeholder="Buscar placa o conductor"
-          className="h-11 w-full rounded-full border border-gray-200 bg-white px-4 text-base"
+          className="h-11 w-full rounded-full border border-gray-500 bg-white px-4 text-base"
         />
       </form>
       <Tarjeta>
         {vehiculos.length === 0 ? (
-          <p className="py-6 text-center text-gray-500">
+          <p className="py-6 text-center text-gray-600">
             {todos.length === 0
               ? "Aún no tienes unidades. Agrega la primera con su placa y conductor."
               : `No encontré “${q}”.`}
           </p>
         ) : (
-          <ul className="divide-y divide-gray-100">
+          <ul className="divide-y divide-gray-200">
             {vehiculos.map((v) => (
               <li key={v.placa}>
                 <Link href={`/unidades/${v.placa}`} className={FILA_TOCABLE}>
                   <Placa placa={v.placa} />
                   <span className="min-w-0 flex-1">
                     <b className="block truncate font-semibold">{v.conductor ?? "Sin conductor"}</b>
-                    <span className="text-sm text-gray-500 tabular-nums">
+                    <span className="text-sm text-gray-600 tabular-nums">
                       {v.marca ?? "Sin marca"} ·{" "}
                       {v.kmActual != null ? `${v.kmActual.toLocaleString("es-PE")} km` : "sin km"}
                     </span>
