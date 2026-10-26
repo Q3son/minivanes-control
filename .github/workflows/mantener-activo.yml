@@ -1,0 +1,29 @@
+name: Mantener activa la base de datos
+
+# El plan gratuito de Supabase pausa el proyecto tras 7 días sin uso.
+# Una consulta diaria lo mantiene despierto aunque el dueño no abra la app.
+on:
+  schedule:
+    - cron: "30 11 * * *" # todos los días a las 6:30 a. m. hora de Lima
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    name: Consultar Supabase
+    runs-on: ubuntu-latest
+    env:
+      # Valores públicos por diseño (los mismos que usa la app en el navegador).
+      URL: ${{ vars.SUPABASE_URL || 'https://keblqswgibkwffdzxony.supabase.co' }}
+      CLAVE: ${{ vars.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_2owsd7E6RQBEk23g5LE4ng_gtEypRyQ' }}
+    steps:
+      - name: Consulta liviana a la API
+        run: |
+          codigo=$(curl -sS -o /dev/null -w "%{http_code}" --retry 3 --retry-delay 10 \
+            "$URL/rest/v1/vehiculos?select=placa&limit=1" \
+            -H "apikey: $CLAVE" -H "Authorization: Bearer $CLAVE")
+          echo "Respuesta: $codigo"
+          # Sin sesión, la seguridad por filas devuelve una lista vacía con 200: basta para contar como uso.
+          test "$codigo" = "200"

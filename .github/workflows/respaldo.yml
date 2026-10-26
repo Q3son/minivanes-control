@@ -2,7 +2,7 @@ name: Respaldo de la base de datos
 
 on:
   schedule:
-    - cron: "0 8 * * 0" # domingos 3:00 a. m. hora de Lima
+    - cron: "0 8 * * *" # todos los días a las 3:00 a. m. hora de Lima
   workflow_dispatch:
 
 permissions:
@@ -41,12 +41,15 @@ jobs:
             --symmetric --cipher-algo AES256 --output "respaldo-$fecha.dump.gpg" respaldo.dump
           shred -u respaldo.dump
           echo "ARCHIVO=respaldo-$fecha.dump.gpg" >> "$GITHUB_ENV"
+          # El de los domingos se guarda 90 días; los demás, 14.
+          if [ "$(TZ=America/Lima date +%u)" = "7" ]; then dias=90; else dias=14; fi
+          echo "DIAS=$dias" >> "$GITHUB_ENV"
 
-      - name: Guardar por 90 días
+      - name: Guardar el respaldo cifrado
         if: steps.secretos.outputs.listo == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARCHIVO }}
           path: ${{ env.ARCHIVO }}
-          retention-days: 90
+          retention-days: ${{ env.DIAS }}
           if-no-files-found: error
