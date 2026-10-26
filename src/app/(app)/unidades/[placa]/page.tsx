@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FormularioKm } from "@/components/formulario-km";
+import { FormularioServicio } from "@/components/formulario-servicio";
 import { Aviso, Placa, Tarjeta } from "@/components/ui";
 import { obtenerVehiculo } from "@/lib/data/vehiculos";
-import { registrarKm } from "./acciones";
+import { registrarKm, registrarMantenimiento } from "./acciones";
 import { alertasDe, diasEntre, fechaCorta, hoyEnLima, proximoCambioAceite } from "@/lib/domain";
 
 const km = (n: number) => `${n.toLocaleString("es-PE")} km`;
@@ -105,6 +106,13 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
             </dl>
           </>
         )}
+      </Tarjeta>
+
+      <Tarjeta>
+        <FormularioServicio
+          accion={registrarMantenimiento.bind(null, v.placa)}
+          kmActual={v.kmActual}
+        />
       </Tarjeta>
 
       <Tarjeta>
