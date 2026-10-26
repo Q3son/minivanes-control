@@ -62,7 +62,7 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
       >
         ← Unidades
       </Link>
-      <Tarjeta>
+      <Tarjeta data-tour="cabecera">
         <div className="flex items-center gap-3">
           <Placa placa={v.placa} grande />
           <div className="min-w-0">

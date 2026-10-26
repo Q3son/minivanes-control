@@ -11,6 +11,23 @@ export interface PasoRecorrido {
 
 export type Pantalla = "inicio" | "unidades" | "ficha" | "llantas" | "alertas";
 
+/**
+ * Al terminar, el recorrido puede seguir en otra pantalla: abre el enlace del
+ * elemento `ancla` y ahí arranca el recorrido de esa pantalla.
+ */
+export interface Continuacion {
+  ancla: string;
+  texto: string;
+}
+
+export const CONTINUAR: Partial<Record<Pantalla, Continuacion>> = {
+  unidades: { ancla: "unidad", texto: "Abrir esta unidad →" },
+  ficha: { ancla: "llantas", texto: "Ver sus llantas →" },
+};
+
+/** Parámetro de la URL que pide arrancar el recorrido al llegar a una pantalla. */
+export const PARAM_RECORRIDO = "recorrido";
+
 export const RECORRIDOS: Record<Pantalla, PasoRecorrido[]> = {
   inicio: [
     {
@@ -58,60 +75,95 @@ export const RECORRIDOS: Record<Pantalla, PasoRecorrido[]> = {
   ],
   unidades: [
     {
+      titulo: "Tus unidades",
+      texto:
+        "Aquí está cada minivan con su propia ficha: lo que te deja, kilometraje, aceite, mantenimientos, llantas y documentos. Te lo muestro completo.",
+    },
+    {
       ancla: "buscar",
-      titulo: "Buscar",
-      texto: "Escribe la placa o el nombre del conductor y presiona buscar en el teclado.",
+      titulo: "Buscar por placa",
+      texto:
+        "Escribe la placa (con o sin guion) o el nombre del conductor y toca buscar en el teclado.",
     },
     {
       ancla: "agregar",
-      titulo: "Agregar unidad",
-      texto: "Para registrar una minivan nueva con su placa, conductor y cuota semanal.",
+      titulo: "Agregar una minivan",
+      texto:
+        "Registra una unidad nueva con su placa, conductor, cuota semanal y fechas de SOAT y revisión.",
     },
     {
       ancla: "unidad",
-      titulo: "Abrir una unidad",
+      titulo: "Cada fila es una unidad",
       texto:
-        "Toca la fila para ver su ficha. La etiqueta te dice si está al día (verde), por revisar (ámbar) o por atender (rojo).",
+        "La etiqueta de la derecha te dice cómo está: ✓ verde al día, ! ámbar por revisar, !! rojo por atender. Toca la fila para abrir su ficha.",
     },
   ],
   ficha: [
     {
+      ancla: "cabecera",
+      titulo: "La ficha de la unidad",
+      texto:
+        "Placa, conductor, cuota y el último kilometraje anotado. Con «Editar» cambias sus datos.",
+    },
+    {
+      ancla: "ganancia",
+      titulo: "Cuánto te deja",
+      texto:
+        "Lo que cobraste menos lo que gastaste en esta unidad este mes, y cómo le fue en los últimos meses. Las barras rojas son meses en pérdida.",
+    },
+    {
       ancla: "km",
       titulo: "Anota el kilometraje",
-      texto: "Míralo en el tablero cada vez que puedas. Con eso se calcula cuándo toca el aceite.",
+      texto:
+        "Míralo en el tablero cada vez que puedas. Si escribes un número raro, la app te avisa antes de guardarlo.",
     },
     {
       ancla: "aceite",
       titulo: "Cambio de aceite",
-      texto: "La barra se llena con los km. Verde va bien, ámbar se acerca y rojo ya toca.",
+      texto:
+        "La barra se llena con los km. Verde va bien, ámbar faltan menos de 1,000 km y rojo ya toca.",
+    },
+    {
+      ancla: "mantenimiento",
+      titulo: "Anotar un mantenimiento",
+      texto:
+        "Aceite, frenos, alineamiento o una reparación: elige qué se hizo, el km y cuánto costó.",
+    },
+    {
+      ancla: "historial-mantenimiento",
+      titulo: "Historial",
+      texto:
+        "Todo lo que se le hizo, con fecha, km y costo. También te dice cuántos km pasaron desde el anterior del mismo tipo.",
+    },
+    {
+      ancla: "documentos",
+      titulo: "SOAT y revisión técnica",
+      texto: "Te avisa 15 días antes de que venzan, aquí y en Alertas.",
     },
     {
       ancla: "llantas",
       titulo: "Llantas",
-      texto: "Registra cada llanta con su código DOT y foto, para que no te la cambien.",
-    },
-    {
-      ancla: "mantenimiento",
-      titulo: "Anotar mantenimiento",
-      texto: "Aceite, frenos u otro arreglo: elige el tipo, el km y lo que costó.",
-    },
-    {
-      ancla: "documentos",
-      titulo: "Documentos",
-      texto: "Vencimiento del SOAT y la revisión técnica. Te avisa 15 días antes.",
+      texto:
+        "Cada llanta queda registrada con su código DOT y foto, para que no te la cambien sin que lo sepas.",
     },
   ],
   llantas: [
     {
       ancla: "diagrama",
       titulo: "Las llantas de la unidad",
-      texto: "Toca una posición para poner una llanta o cambiarla. Te pedirá el DOT y una foto.",
+      texto:
+        "Cada casilla es una posición, con los km que lleva esa llanta. Toca una para ponerla o cambiarla: te pedirá el DOT y una foto.",
     },
     {
       ancla: "historial",
-      titulo: "Historial",
+      titulo: "Llantas que ya salieron",
       texto:
-        "Cada cambio queda guardado con sus fotos. Si el DOT devuelto no coincide, aparece en rojo como prueba.",
+        "Cada cambio queda guardado con sus fotos y cuánto duró. Si el DOT devuelto no coincide, aparece en rojo como prueba.",
+    },
+    {
+      titulo: "¡Listo!",
+      texto:
+        "Ya conoces cómo funciona una unidad. Puedes volver a ver este recorrido cuando quieras desde «Más».",
     },
   ],
   alertas: [

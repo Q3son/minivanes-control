@@ -1,16 +1,26 @@
 "use client";
 
-import { RECORRIDOS, type Pantalla } from "@/lib/recorridos";
+import { CONTINUAR, PARAM_RECORRIDO, RECORRIDOS, type Pantalla } from "@/lib/recorridos";
 
 const CLAVE_VISTO = "recorrido-inicio-visto";
 
-/** Inicia el recorrido de una pantalla. driver.js se carga solo cuando hace falta. */
-export async function iniciarRecorrido(pantalla: Pantalla) {
-  const { driver } = await import("driver.js");
+const ancla = (nombre: string) => `[data-tour="${nombre}"]`;
+
+/**
+ * Inicia el recorrido de una pantalla. driver.js se carga solo cuando hace falta.
+ * Si la pantalla tiene continuación (Unidades → ficha → Llantas), el último botón
+ * abre la siguiente pantalla con `?recorrido=1` para seguir ahí.
+ */
+export async function iniciarRecorrido(pantalla: Pantalla, irA?: (href: string) => void) {
+  const [{ driver }] = await Promise.all([import("driver.js"), esperarPantalla(pantalla)]);
   const pasos = RECORRIDOS[pantalla].filter(
-    (p) => !p.ancla || document.querySelector(`[data-tour="${p.ancla}"]`),
+    (p) => !p.ancla || document.querySelector(ancla(p.ancla)),
   );
-  driver({
+  const sigue = CONTINUAR[pantalla];
+  const destino =
+    sigue && document.querySelector<HTMLAnchorElement>(`a${ancla(sigue.ancla)}`)?.href;
+
+  const recorrido = driver({
     showProgress: pasos.length > 1,
     progressText: "{{current}} de {{total}}",
     nextBtnText: "Siguiente",
@@ -22,11 +32,47 @@ export async function iniciarRecorrido(pantalla: Pantalla) {
     stageRadius: 14,
     overlayOpacity: 0.6,
     smoothScroll: true,
-    steps: pasos.map((p) => ({
-      element: p.ancla ? `[data-tour="${p.ancla}"]` : undefined,
-      popover: { title: p.titulo, description: p.texto },
-    })),
-  }).drive();
+    steps: pasos.map((p, i) => {
+      const ultimo = i === pasos.length - 1;
+      return {
+        element: p.ancla ? ancla(p.ancla) : undefined,
+        popover: {
+          title: p.titulo,
+          description: p.texto,
+          ...(ultimo && destino && irA
+            ? {
+                doneBtnText: sigue.texto,
+                onDoneClick: () => {
+                  recorrido.destroy();
+                  const url = new URL(destino);
+                  url.searchParams.set(PARAM_RECORRIDO, "1");
+                  irA(url.pathname + url.search);
+                },
+              }
+            : {}),
+        },
+      };
+    }),
+  });
+  recorrido.drive();
+}
+
+/**
+ * Al llegar desde otra pantalla puede verse aún el esqueleto de carga:
+ * espera (hasta 5 s) a que aparezca algún elemento del recorrido.
+ */
+function esperarPantalla(pantalla: Pantalla, limiteMs = 5000) {
+  const selector = RECORRIDOS[pantalla].flatMap((p) => (p.ancla ? [ancla(p.ancla)] : [])).join(",");
+  return new Promise<void>((listo) => {
+    if (!selector || document.querySelector(selector)) return listo();
+    const inicio = Date.now();
+    const id = setInterval(() => {
+      if (document.querySelector(selector) || Date.now() - inicio > limiteMs) {
+        clearInterval(id);
+        listo();
+      }
+    }, 100);
+  });
 }
 
 /** El recorrido de Inicio se muestra solo la primera vez en cada celular. */

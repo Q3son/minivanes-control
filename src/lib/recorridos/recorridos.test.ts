@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { RECORRIDOS, pantallaDe } from ".";
+import { CONTINUAR, RECORRIDOS, pantallaDe } from ".";
 
 describe("pantallaDe", () => {
   it.each([
@@ -25,6 +25,15 @@ describe("RECORRIDOS", () => {
         expect(p.titulo.trim()).not.toBe("");
         expect(p.texto.trim()).not.toBe("");
       }
+    }
+  });
+});
+
+describe("CONTINUAR", () => {
+  it("la continuación apunta a un ancla que existe en los pasos de esa pantalla", () => {
+    for (const [pantalla, c] of Object.entries(CONTINUAR)) {
+      const anclas = RECORRIDOS[pantalla as keyof typeof RECORRIDOS].map((p) => p.ancla);
+      expect(anclas).toContain(c.ancla);
     }
   });
 });
