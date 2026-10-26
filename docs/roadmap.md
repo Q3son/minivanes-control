@@ -18,8 +18,8 @@ Cada punto es un issue y una rama. Se marca cuando su PR se fusiona.
 
 ## v0.3 · Llantas y reportes
 
-- [ ] Cambio de llanta por posición con DOT, mm, marca propia y fotos de entrada y salida
-- [ ] Aviso cuando el DOT devuelto no coincide
+- [x] Cambio de llanta por posición con DOT, mm, marca propia y fotos de entrada y salida
+- [x] Aviso cuando el DOT devuelto no coincide
 - [ ] Reporte mensual por unidad y exportación a Excel
 - [ ] Cuentas por cobrar a conductores
 

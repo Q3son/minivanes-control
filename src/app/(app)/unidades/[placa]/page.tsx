@@ -59,12 +59,20 @@ export default async function FichaUnidad({ params }: { params: Promise<{ placa:
               {v.kmActualFecha ? `Anotado el ${fechaCorta(v.kmActualFecha)}` : "Sin lecturas"}
             </p>
           </div>
-          <Link
-            href={`/unidades/${v.placa}/editar`}
-            className="rounded-full bg-gray-100 px-4 py-2 text-sm font-bold"
-          >
-            Editar
-          </Link>
+          <div className="flex gap-2">
+            <Link
+              href={`/unidades/${v.placa}/llantas`}
+              className="rounded-full bg-marca px-4 py-2 text-sm font-bold text-white"
+            >
+              Llantas
+            </Link>
+            <Link
+              href={`/unidades/${v.placa}/editar`}
+              className="rounded-full bg-gray-100 px-4 py-2 text-sm font-bold"
+            >
+              Editar
+            </Link>
+          </div>
         </div>
       </Tarjeta>
 
