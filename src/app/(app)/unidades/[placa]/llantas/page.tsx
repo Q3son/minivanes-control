@@ -1,14 +1,20 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Placa, Tarjeta } from "@/components/ui";
+import { Aviso, Placa, Tarjeta } from "@/components/ui";
 import { listarLlantas, type RegistroLlanta } from "@/lib/data/llantas";
 import { obtenerVehiculo } from "@/lib/data/vehiculos";
 import { fechaCorta, posicionesDe, type Posicion } from "@/lib/domain";
 
 const km = (n: number | null) => (n == null ? "—" : `${n.toLocaleString("es-PE")} km`);
 
-export default async function Llantas({ params }: { params: Promise<{ placa: string }> }) {
-  const { placa } = await params;
+export default async function Llantas({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ placa: string }>;
+  searchParams: Promise<{ aviso?: string }>;
+}) {
+  const [{ placa }, { aviso }] = await Promise.all([params, searchParams]);
   const [v, llantas] = await Promise.all([obtenerVehiculo(placa), listarLlantas(placa)]);
   if (!v) notFound();
 
@@ -55,6 +61,13 @@ export default async function Llantas({ params }: { params: Promise<{ placa: str
         <h1 className="text-2xl font-extrabold tracking-tight">Llantas</h1>
       </header>
 
+      {aviso === "ok" && <Aviso tono="exito">Cambio de llanta guardado.</Aviso>}
+      {aviso === "no-coincide" && (
+        <Aviso tono="error">
+          Guardado, pero ojo: la llanta que te devolvieron no es la que se puso. Quedó marcada en el
+          historial.
+        </Aviso>
+      )}
       <Tarjeta>
         <p className="text-sm text-gray-600">
           El número es lo que lleva recorrido cada llanta desde que se puso. Toca una para
