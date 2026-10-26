@@ -45,6 +45,14 @@ npm ci
 npm run dev
 ```
 
+### Configurar Supabase (una sola vez)
+
+1. **Tablas:** ejecuta `supabase/migrations/*.sql` en orden desde el SQL Editor o con `supabase db push`.
+2. **Usuario del dueño:** en Authentication → Users → _Invite user_, invita el correo del dueño.
+   El registro libre está apagado a propósito (`shouldCreateUser: false`): nadie más puede crear cuenta.
+3. **URL del sitio:** en Authentication → URL Configuration agrega `https://tu-dominio/auth/confirmar`
+   (y `http://localhost:3000/auth/confirmar` para desarrollo) como Redirect URL.
+
 Para crear las tablas, ejecuta `supabase/migrations/*.sql` desde el SQL Editor de Supabase
 o con `supabase db push`.
 
