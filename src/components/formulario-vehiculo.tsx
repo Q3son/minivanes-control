@@ -35,7 +35,7 @@ export function FormularioVehiculo({ accion, vehiculo }: { accion: Accion; vehic
         defaultValue={vehiculo?.conductor ?? ""}
         error={e.conductor}
       />
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-3">
         <Campo
           id="marca"
           name="marca"
@@ -77,7 +77,7 @@ export function FormularioVehiculo({ accion, vehiculo }: { accion: Accion; vehic
         defaultValue={vehiculo?.intervaloAceiteKm ?? 9000}
         error={e.intervaloAceiteKm}
       />
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-[repeat(2,minmax(0,1fr))]">
         <Campo
           id="soatVence"
           name="soatVence"
