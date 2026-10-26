@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Encabezado } from "@/components/encabezado";
 import { PildoraEstado } from "@/components/estado";
-import { Placa, Tarjeta } from "@/components/ui";
+import { Chevron, FILA_TOCABLE, Placa, Tarjeta } from "@/components/ui";
 import { listarVehiculos } from "@/lib/data/vehiculos";
 import { alertasDe, estadoVehiculo, hoyEnLima, normalizarPlaca } from "@/lib/domain";
 
@@ -27,7 +27,7 @@ export default async function Unidades({
         accion={
           <Link
             href="/unidades/nueva"
-            className="rounded-full bg-marca px-4 py-2 text-sm font-bold text-white"
+            className="rounded-full bg-marca px-4 py-2 text-sm font-bold text-white transition active:scale-95"
           >
             Agregar
           </Link>
@@ -57,7 +57,7 @@ export default async function Unidades({
           <ul className="divide-y divide-gray-100">
             {vehiculos.map((v) => (
               <li key={v.placa}>
-                <Link href={`/unidades/${v.placa}`} className="flex items-center gap-3 py-3">
+                <Link href={`/unidades/${v.placa}`} className={FILA_TOCABLE}>
                   <Placa placa={v.placa} />
                   <span className="min-w-0 flex-1">
                     <b className="block truncate font-semibold">{v.conductor ?? "Sin conductor"}</b>
@@ -67,6 +67,7 @@ export default async function Unidades({
                     </span>
                   </span>
                   <PildoraEstado estado={estadoVehiculo(alertasDe(v, hoy))} />
+                  <Chevron />
                 </Link>
               </li>
             ))}

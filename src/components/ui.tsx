@@ -93,3 +93,25 @@ export function Aviso({
     </div>
   );
 }
+
+/** Clases para una fila de lista que lleva a otra pantalla: se resalta al tocarla. */
+export const FILA_TOCABLE =
+  "-mx-2 flex items-center gap-3 rounded-xl px-2 py-3 transition-colors hover:bg-gray-50 active:bg-gray-100";
+
+/** Flecha que indica que la fila se puede abrir. */
+export function Chevron() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="size-5 shrink-0 text-gray-400"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M9 6l6 6-6 6" />
+    </svg>
+  );
+}
