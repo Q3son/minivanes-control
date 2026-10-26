@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Aviso } from "@/components/ui";
+import { Volcanes } from "@/components/volcanes";
 import { FormularioIngreso } from "./formulario";
 
 export const metadata: Metadata = { title: "Ingresar · Control de Minivanes" };
@@ -29,7 +30,7 @@ function PlacaGrande() {
   return (
     <div
       aria-hidden
-      className="w-[min(100%,22rem)] -rotate-2 overflow-hidden rounded-xl border-[3px] border-gray-900 bg-white shadow-[0_18px_40px_-12px_rgb(0_0_0/0.55)] lg:w-[26rem]"
+      className="w-[min(100%,22rem)] -rotate-2 overflow-hidden rounded-xl border-[3px] border-gray-900 bg-white shadow-[0_18px_40px_-12px_rgb(0_0_0/0.55)] lg:w-[24rem]"
     >
       <div className="bg-blue-700 py-1 text-center text-[11px] font-bold tracking-[0.35em] text-white lg:text-xs">
         PERÚ
@@ -50,7 +51,13 @@ export default async function Ingresar({
   return (
     <main className="grid min-h-dvh lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
       <section className="relative flex flex-col justify-center overflow-hidden bg-panel px-6 pt-10 pb-12 text-panel-texto lg:px-14 lg:py-16">
-        <div className="mx-auto flex w-full max-w-lg flex-col gap-8">
+        <Volcanes
+          cerros="#1c2f28"
+          nieve="#7f968c"
+          lomas="#16261f"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-36 w-full lg:h-48"
+        />
+        <div className="relative mx-auto flex w-full max-w-lg flex-col gap-7 pb-32 lg:pb-40">
           <PlacaGrande />
           <div className="flex max-w-md flex-col gap-3">
             <h1 className="text-3xl leading-tight font-extrabold tracking-tight lg:text-5xl">
@@ -85,10 +92,10 @@ export default async function Ingresar({
             ))}
           </ul>
         </div>
-        {/* Línea de carril: el único adorno, tomado de la pista. */}
+        {/* Línea de carril sobre las lomas: la pista que lleva al Misti. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-5 h-1 bg-[repeating-linear-gradient(90deg,rgb(255_255_255/0.22)_0_36px,transparent_36px_64px)]"
+          className="pointer-events-none absolute inset-x-0 bottom-6 h-1 bg-[repeating-linear-gradient(90deg,rgb(255_255_255/0.22)_0_36px,transparent_36px_64px)]"
         />
       </section>
 
