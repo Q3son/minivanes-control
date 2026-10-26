@@ -37,3 +37,10 @@ export function fechaCorta(fecha: string): string {
   const [y, m, d] = fecha.split("-").map(Number);
   return `${d} ${MESES[m - 1]} ${y}`;
 }
+
+/** Primer y último día de un mes "YYYY-MM". */
+export function rangoDelMes(mes: string): [string, string] {
+  const [y, m] = mes.split("-").map(Number);
+  const ultimo = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  return [`${mes}-01`, `${mes}-${String(ultimo).padStart(2, "0")}`];
+}

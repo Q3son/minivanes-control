@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { diasEntre, fechaCorta, hoyEnLima, lunesDe } from "./fechas";
+import { diasEntre, fechaCorta, hoyEnLima, lunesDe, rangoDelMes } from "./fechas";
 
 describe("fechas", () => {
   it("cuenta días sin depender de la zona horaria", () => {
@@ -19,5 +19,10 @@ describe("fechas", () => {
 
   it("muestra fechas cortas en español", () => {
     expect(fechaCorta("2026-11-05")).toBe("5 nov 2026");
+  });
+
+  it("da el último día real del mes", () => {
+    expect(rangoDelMes("2026-11")).toEqual(["2026-11-01", "2026-11-30"]);
+    expect(rangoDelMes("2028-02")).toEqual(["2028-02-01", "2028-02-29"]);
   });
 });
