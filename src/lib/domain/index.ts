@@ -6,3 +6,4 @@ export * from "./llantas";
 export * from "./finanzas";
 export * from "./vehiculo";
 export * from "./movimientos";
+export * from "./servicios";
