@@ -115,7 +115,7 @@ export function FormularioLlanta({
             etiqueta="DOT de la llanta devuelta"
             inputMode="numeric"
             maxLength={6}
-            placeholder="Ej. 1826"
+            placeholder="4 números"
             value={dotDevuelto}
             onChange={(ev) => setDotDevuelto(ev.target.value)}
             error={errorPaso1 ?? e.dotDevuelto}
@@ -181,7 +181,7 @@ export function FormularioLlanta({
           ayuda="Los 4 últimos números del código DOT, en el costado de la llanta."
           inputMode="numeric"
           maxLength={6}
-          placeholder="Ej. 3826"
+          placeholder="4 números"
           error={e.dot}
         />
         <CampoFoto
