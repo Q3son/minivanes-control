@@ -22,9 +22,10 @@ export function Boton({
   );
 }
 
-export function Tarjeta({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function Tarjeta({ children, className = "", ...props }: ComponentProps<"section">) {
   return (
     <section
+      {...props}
       className={`flex flex-col gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm ${className}`}
     >
       {children}

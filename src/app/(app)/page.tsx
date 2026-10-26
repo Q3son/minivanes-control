@@ -56,17 +56,13 @@ export default async function Inicio({
 
   return (
     <>
-      <Encabezado
-        titulo="Inicio"
-        accion={
-          <form action="/auth/salir" method="post">
-            <button className="min-h-11 px-2 text-[15px] font-semibold text-gray-700">Salir</button>
-          </form>
-        }
-      />
+      <Encabezado titulo="Inicio" />
       {gasto === "ok" && <Aviso tono="exito">Gasto guardado.</Aviso>}
 
-      <section className="flex flex-col gap-3 rounded-2xl bg-panel p-5 text-panel-texto">
+      <section
+        data-tour="resumen"
+        className="flex flex-col gap-3 rounded-2xl bg-panel p-5 text-panel-texto"
+      >
         <p className="text-sm font-semibold text-panel-suave">
           Te queda en {MESES[Number(mes.slice(5)) - 1]}
         </p>
@@ -88,7 +84,7 @@ export default async function Inicio({
       </section>
 
       {alertas.length > 0 && (
-        <Tarjeta>
+        <Tarjeta data-tour="para-atender">
           <div className="flex items-baseline justify-between">
             <h2 className="font-bold">Para atender</h2>
             <Link
@@ -104,6 +100,7 @@ export default async function Inicio({
 
       <Link
         href="/gastos/nuevo"
+        data-tour="anotar-gasto"
         className="flex min-h-12 items-center justify-center gap-2 rounded-xl border-[1.5px] border-marca bg-white px-4 font-bold text-marca transition active:scale-[0.98] active:bg-marca-suave"
       >
         <span aria-hidden className="text-xl leading-none">
@@ -112,7 +109,7 @@ export default async function Inicio({
         Anotar gasto
       </Link>
 
-      <Tarjeta>
+      <Tarjeta data-tour="cobros">
         <div className="flex items-baseline justify-between">
           <h2 className="font-bold">Cobros de esta semana</h2>
           <span className="text-sm text-gray-600 tabular-nums">

@@ -9,7 +9,7 @@ export default async function Alertas() {
   return (
     <>
       <Encabezado titulo="Alertas" />
-      <Tarjeta>
+      <Tarjeta data-tour="lista-alertas">
         {alertas.length ? (
           <ListaAlertas alertas={alertas} />
         ) : (

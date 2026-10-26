@@ -90,7 +90,7 @@ export default async function Llantas({
           historial.
         </Aviso>
       )}
-      <Tarjeta>
+      <Tarjeta data-tour="diagrama">
         <p className="text-sm text-gray-600">
           El número es lo que lleva recorrido cada llanta desde que se puso. Toca una para
           cambiarla.
@@ -128,7 +128,7 @@ export default async function Llantas({
         {posiciones.filter((p) => p.lado === "repuesto").map(casilla)}
       </Tarjeta>
 
-      <Tarjeta>
+      <Tarjeta data-tour="historial">
         <h2 className="font-bold">Llantas que ya salieron</h2>
         {retiradas.length === 0 ? (
           <p className="text-gray-600">Aquí verás cuánto duró cada llanta que cambies.</p>

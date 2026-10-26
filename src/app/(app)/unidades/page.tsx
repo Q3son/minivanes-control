@@ -27,13 +27,14 @@ export default async function Unidades({
         accion={
           <Link
             href="/unidades/nueva"
+            data-tour="agregar"
             className="inline-flex min-h-11 items-center rounded-full bg-marca px-4 text-sm font-bold text-white transition active:scale-95"
           >
             Agregar
           </Link>
         }
       />
-      <form role="search" className="relative">
+      <form role="search" data-tour="buscar" className="relative">
         <label htmlFor="q" className="sr-only">
           Buscar placa o conductor
         </label>
@@ -55,9 +56,13 @@ export default async function Unidades({
           </p>
         ) : (
           <ul className="divide-y divide-gray-200">
-            {vehiculos.map((v) => (
+            {vehiculos.map((v, i) => (
               <li key={v.placa}>
-                <Link href={`/unidades/${v.placa}`} className={FILA_TOCABLE}>
+                <Link
+                  href={`/unidades/${v.placa}`}
+                  data-tour={i === 0 ? "unidad" : undefined}
+                  className={FILA_TOCABLE}
+                >
                   <Placa placa={v.placa} />
                   <span className="min-w-0 flex-1">
                     <b className="block truncate font-semibold">{v.conductor ?? "Sin conductor"}</b>
