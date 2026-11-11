@@ -20,10 +20,26 @@ export async function enviarEnlace(_: EstadoIngreso, datos: FormData): Promise<E
   });
 
   if (error) {
-    return {
-      estado: "error",
-      mensaje: "No pudimos enviar el enlace. Revisa el correo o intenta en un minuto.",
-    };
+    console.error("[ingresar] signInWithOtp", error.code, error.status, error.message);
+    return { estado: "error", mensaje: mensajeDeError(error.code, error.status) };
   }
   return { estado: "enviado", mensaje: correo.data };
+}
+
+/** Traduce los errores de Supabase Auth a algo que el dueño pueda resolver. */
+function mensajeDeError(codigo?: string, status?: number): string {
+  if (codigo === "otp_disabled" || codigo === "signup_disabled" || codigo === "user_not_found") {
+    return "Ese correo no tiene cuenta en el sistema. Revisa que esté bien escrito.";
+  }
+  if (
+    codigo === "over_email_send_rate_limit" ||
+    codigo === "over_request_rate_limit" ||
+    status === 429
+  ) {
+    return "Ya se enviaron varios enlaces. Espera unos minutos y vuelve a intentar.";
+  }
+  if (codigo === "email_address_not_authorized") {
+    return "El servidor de correo todavía no puede enviar a esta dirección. Avisa al desarrollador.";
+  }
+  return "No pudimos enviar el enlace. Intenta en un minuto.";
 }
